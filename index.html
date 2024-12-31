@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="js/data-manager.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/ui-manager.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/salespeople.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <header class="dashboard-header">
+            <h1>Sales Dashboard</h1>
+        </header>
+        
+        <div class="summary-cards">
+            <div class="card">
+                <span class="material-icons card-icon">calendar_month</span>
+                <span class="card-label">Monthly Sales</span>
+                <div class="card-content">
+                    <span class="amount">RM 0</span>
+                    <div class="target-info">Target: RM 0</div>
+                    <div class="progress-container">
+                        <div class="progress-bar"></div>
+                        <span class="progress-text">0%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <span class="material-icons card-icon">calendar_view_month</span>
+                <span class="card-label">Quarterly Sales</span>
+                <div class="card-content">
+                    <span class="amount">RM 0</span>
+                    <div class="target-info">Target: RM 0</div>
+                    <div class="progress-container">
+                        <div class="progress-bar"></div>
+                        <span class="progress-text">0%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <span class="material-icons card-icon">calendar_today</span>
+                <span class="card-label">Year to Date Sales</span>
+                <div class="card-content">
+                    <span class="amount">RM 0</span>
+                    <div class="target-info">Target: RM 0</div>
+                    <div class="progress-container">
+                        <div class="progress-bar"></div>
+                        <span class="progress-text">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-header">
+                <h2>Submit New Sale</h2>
+            </div>
+            <form id="salesForm" action="/submit-sales" method="POST">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="salesName">Sales Person</label>
+                        <select id="salesName" name="salesName" required>
+                            <option value="">Select Sales Person</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="salesAmount">Amount (RM)</label>
+                        <input type="number" id="salesAmount" name="salesAmount" step="0.01" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="salesDate">Date</label>
+                        <input type="date" id="salesDate" name="salesDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="remarks">Remarks</label>
+                        <input type="text" id="remarks" name="remarks">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">Submit</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="content-section">
+            <div class="section-header">
+                <h2>Recent Sales</h2>
+            </div>
+            <table class="sales-table">
+                <thead>
+                    <tr>
+                        <th>Sales Person</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John Smith</td>
+                        <td>RM 345,678</td>
+                        <td>2024-03-15</td>
+                        <td><span class="status approved">Approved</span></td>
+                    </tr>
+                    <tr>
+                        <td>Mary Johnson</td>
+                        <td>RM 298,432</td>
+                        <td>2024-03-14</td>
+                        <td><span class="status pending">Pending</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="content-section">
+            <div class="section-header">
+                <h2>Individual Performance</h2>
+                <div class="ranking-filter">
+                    <button class="filter-btn active" data-period="month">This Month</button>
+                    <button class="filter-btn" data-period="quarter">This Quarter</button>
+                    <button class="filter-btn" data-period="year">This Year</button>
+                </div>
+            </div>
+            <table class="ranking-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Sales Person</th>
+                        <th>Target</th>
+                        <th>Achieved</th>
+                        <th>Progress</th>
+                        <th>To Achieve</th>
+                    </tr>
+                </thead>
+                <tbody id="rankingTableBody">
+                    <!-- 动态内容 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 添加销售员模态框 -->
+    <div id="salespersonModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Manage Sales Person</h2>
+                <button class="close-btn" onclick="closeSalespersonModal()">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="salespersonForm" onsubmit="handleSalespersonSubmit(event)">
+                    <div class="form-group">
+                        <label>Photo</label>
+                        <div class="avatar-upload">
+                            <img id="avatarPreview" src="https://via.placeholder.com/100" alt="Avatar">
+                            <input type="file" id="avatarInput" accept="image/*" onchange="handleAvatarChange(event)">
+                            <button type="button" class="upload-btn">
+                                <span class="material-icons">add_a_photo</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" id="spName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="spEmail" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // 初始化销售数据
+    const salesData = JSON.parse(localStorage.getItem('salesData')) || [];
+
+    // 处理销售提交表单
+    document.getElementById('salesForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const salesName = document.getElementById('salesName').value;
+        if (!salesName) {
+            alert('Please select a sales person');
+            return;
+        }
+
+        try {
+            const formData = {
+                salesName: salesName,
+                salesAmount: Number(document.getElementById('salesAmount').value),
+                salesDate: document.getElementById('salesDate').value || new Date().toISOString().split('T')[0],
+                remarks: document.getElementById('remarks').value
+            };
+
+            // 添加销售记录
+            DataManager.addSaleRecord(formData);
+
+            // 重置表单
+            this.reset();
+            
+            // 更新UI
+            UIManager.updateAll();
+
+            // 显示成功消息
+            alert('Sales record submitted successfully!');
+        } catch (error) {
+            console.error('Error submitting sales:', error);
+            alert('Error submitting sales record. Please try again.');
+        }
+    });
+
+    // 确保销售人员选择器在页面加载时初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        try {
+            // 初始化所有UI
+            UIManager.updateAll();
+
+            // 设置默认日期为今天
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('salesDate').value = today;
+
+            // 绑定事件监听器
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const period = this.dataset.period;
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    UIManager.updateRankingTable(period);
+                });
+            });
+        } catch (error) {
+            console.error('Error initializing page:', error);
+            alert('Error loading page. Please refresh and try again.');
+        }
+    });
+
+    // 更新最近销售列表
+    function updateRecentSales() {
+        const tbody = document.querySelector('.sales-table tbody');
+        const recentSales = salesData
+            .sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt))
+            .slice(0, 5);
+
+        tbody.innerHTML = recentSales.map(sale => `
+            <tr>
+                <td>${sale.salesName}</td>
+                <td>RM ${Number(sale.salesAmount).toLocaleString()}</td>
+                <td>${sale.salesDate}</td>
+                <td><span class="status ${sale.status}">${sale.status.toUpperCase()}</span></td>
+            </tr>
+        `).join('');
+    }
+
+    // 页面加载时初始化销售员列表
+    document.addEventListener('DOMContentLoaded', function() {
+        loadSalespeople();
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('salesDate').value = today;
+        updateRecentSales();
+        calculateSalesMetrics();
+        updateRankingTable();
+    });
+
+    // 加载销售员列表
+    function loadSalespeople() {
+        const salespeople = getAllSalespeople();
+        const select = document.getElementById('salesName');
+        select.innerHTML = '<option value="">Select Sales Person</option>' +
+            salespeople.map(sp => `
+                <option value="${sp.name}">${sp.name}</option>
+            `).join('');
+    }
+
+    // 打开模态框
+    function openSalespersonModal() {
+        document.getElementById('salespersonModal').style.display = 'block';
+        document.body.style.overflow = 'hidden'; // 防止背景滚动
+    }
+
+    // 关闭模态框
+    function closeSalespersonModal() {
+        document.getElementById('salespersonModal').style.display = 'none';
+        document.body.style.overflow = '';
+        // 重置表单
+        document.getElementById('salespersonForm').reset();
+        document.getElementById('avatarPreview').src = 'https://via.placeholder.com/100';
+    }
+
+    // 处理头像变更
+    function handleAvatarChange(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('avatarPreview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // 处理销售员提交
+    function handleSalespersonSubmit(event) {
+        event.preventDefault();
+        const newSalesperson = {
+            name: document.getElementById('spName').value,
+            email: document.getElementById('spEmail').value,
+            avatar: document.getElementById('avatarPreview').src,
+            status: 'active'
+        };
+        
+        addSalesperson(newSalesperson);
+        loadSalespeople();
+        updateRankingTable();
+        closeSalespersonModal();
+    }
+
+    // 点击上传按钮时触发文件选择
+    document.querySelector('.upload-btn').addEventListener('click', function() {
+        document.getElementById('avatarInput').click();
+    });
+
+    // ESC 键关闭模态框
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeSalespersonModal();
+        }
+    });
+
+    // 点击模态框外部关闭
+    document.getElementById('salespersonModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeSalespersonModal();
+        }
+    });
+
+    let currentPeriod = 'month';
+
+    function updateRankingTable() {
+        const salesData = JSON.parse(localStorage.getItem('salesData')) || [];
+        const salespeople = getAllSalespeople(); // 获取所有销售人员
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth();
+        const currentQuarter = Math.floor(currentMonth / 3);
+
+        // 创建日期范围检查函数
+        const dateFilters = {
+            month: (date) => date.getFullYear() === currentYear && date.getMonth() === currentMonth,
+            quarter: (date) => date.getFullYear() === currentYear && Math.floor(date.getMonth() / 3) === currentQuarter,
+            year: (date) => date.getFullYear() === currentYear
+        };
+
+        // 筛选已审核的销售记录（排除公司直接销售）
+        const approvedSales = salesData.filter(sale => 
+            sale.status === 'approved' && 
+            sale.type !== 'company' &&
+            dateFilters[currentPeriod](new Date(sale.salesDate))
+        );
+
+        // 为每个销售人员创建初始数据
+        const salesByPerson = {};
+        salespeople.forEach(person => {
+            salesByPerson[person.name] = {
+                name: person.name,
+                email: person.email,
+                avatar: person.avatar,
+                totalAmount: 0,
+                dealsCount: 0
+            };
+        });
+
+        // 累加销售数据
+        approvedSales.forEach(sale => {
+            if (salesByPerson[sale.salesName]) {
+                salesByPerson[sale.salesName].totalAmount += Number(sale.salesAmount);
+                salesByPerson[sale.salesName].dealsCount += 1;
+            }
+        });
+
+        // 转换为数组并排序
+        const rankingData = Object.values(salesByPerson)
+            .sort((a, b) => b.totalAmount - a.totalAmount);
+
+        // 更新排名表格
+        const tbody = document.getElementById('rankingTableBody');
+        if (rankingData.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="4" style="text-align: center; padding: 2rem;">
+                        No sales person found
+                    </td>
+                </tr>
+            `;
+        } else {
+            tbody.innerHTML = rankingData.map((person, index) => `
+                <tr class="${index < 3 ? `rank-${index + 1}` : ''}">
+                    <td>
+                        <div class="rank">${index + 1}</div>
+                    </td>
+                    <td>
+                        <div class="salesperson-info">
+                            <img src="${person.avatar}" alt="${person.name}" class="avatar">
+                            <div class="person-details">
+                                <div class="name">${person.name}</div>
+                                <div class="email">${person.email}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>RM ${person.totalAmount.toLocaleString()}</td>
+                    <td>${person.dealsCount}</td>
+                </tr>
+            `).join('');
+        }
+    }
+
+    // 监听排名过滤器点击
+    document.querySelectorAll('.ranking-filter .filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // 更新按钮状态
+            document.querySelectorAll('.ranking-filter .filter-btn').forEach(b => 
+                b.classList.remove('active')
+            );
+            this.classList.add('active');
+            
+            // 更新当前周期并刷新排名
+            currentPeriod = this.dataset.period;
+            updateRankingTable();
+        });
+    });
+
+    // 在页面加载时初始化排名表格
+    document.addEventListener('DOMContentLoaded', function() {
+        // ... 现有的初始化代码 ...
+        updateRankingTable();
+    });
+
+    function calculateSalesMetrics() {
+        const salesData = JSON.parse(localStorage.getItem('salesData')) || [];
+        const targets = JSON.parse(localStorage.getItem('salesTargets')) || {
+            company: {
+                monthly: 0,
+                quarterly: 0,
+                yearly: 0
+            }
+        };
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth();
+        const currentQuarter = Math.floor(currentMonth / 3);
+
+        // 创建日期范围检查函数
+        const isInCurrentMonth = (date) => {
+            return date.getFullYear() === currentYear && date.getMonth() === currentMonth;
+        };
+
+        const isInCurrentQuarter = (date) => {
+            return date.getFullYear() === currentYear && Math.floor(date.getMonth() / 3) === currentQuarter;
+        };
+
+        const isInCurrentYear = (date) => {
+            return date.getFullYear() === currentYear;
+        };
+
+        // 计算销售额
+        const metrics = salesData.reduce((acc, sale) => {
+            if (sale.status !== 'approved') return acc;
+
+            const saleDate = new Date(sale.salesDate);
+            const amount = Number(sale.salesAmount);
+
+            if (isInCurrentMonth(saleDate)) {
+                acc.monthSales += amount;
+            }
+            if (isInCurrentQuarter(saleDate)) {
+                acc.quarterSales += amount;
+            }
+            if (isInCurrentYear(saleDate)) {
+                acc.yearToDateSales += amount;
+            }
+
+            return acc;
+        }, {
+            monthSales: 0,
+            quarterSales: 0,
+            yearToDateSales: 0
+        });
+
+        // 计算完成率
+        const completion = {
+            month: (metrics.monthSales / targets.company.monthly) * 100 || 0,
+            quarter: (metrics.quarterSales / targets.company.quarterly) * 100 || 0,
+            year: (metrics.yearToDateSales / targets.company.yearly) * 100 || 0
+        };
+
+        // 更新月度卡片
+        const monthCard = document.querySelector('.summary-cards .card:nth-child(1)');
+        monthCard.querySelector('.amount').textContent = `RM ${metrics.monthSales.toLocaleString()}`;
+        monthCard.querySelector('.target-info').textContent = `Target: RM ${targets.company.monthly.toLocaleString()}`;
+        monthCard.querySelector('.progress-bar').style.width = `${Math.min(completion.month, 100)}%`;
+        monthCard.querySelector('.progress-text').textContent = `${completion.month.toFixed(1)}%`;
+
+        // 更新季度卡片
+        const quarterCard = document.querySelector('.summary-cards .card:nth-child(2)');
+        quarterCard.querySelector('.amount').textContent = `RM ${metrics.quarterSales.toLocaleString()}`;
+        quarterCard.querySelector('.target-info').textContent = `Target: RM ${targets.company.quarterly.toLocaleString()}`;
+        quarterCard.querySelector('.progress-bar').style.width = `${Math.min(completion.quarter, 100)}%`;
+        quarterCard.querySelector('.progress-text').textContent = `${completion.quarter.toFixed(1)}%`;
+
+        // 更新年度卡片
+        const yearCard = document.querySelector('.summary-cards .card:nth-child(3)');
+        yearCard.querySelector('.amount').textContent = `RM ${metrics.yearToDateSales.toLocaleString()}`;
+        yearCard.querySelector('.target-info').textContent = `Target: RM ${targets.company.yearly.toLocaleString()}`;
+        yearCard.querySelector('.progress-bar').style.width = `${Math.min(completion.year, 100)}%`;
+        yearCard.querySelector('.progress-text').textContent = `${completion.year.toFixed(1)}%`;
+
+        return metrics;
+    }
+
+    // 确保在页面加载时调用
+    document.addEventListener('DOMContentLoaded', function() {
+        calculateSalesMetrics();
+    });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,6926 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+.dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.dashboard-header {
+    margin-bottom: 2rem;
+}
+
+h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+}
+
+/* 当月销售卡片 */
+.card:nth-child(1) {
+    background: linear-gradient(to bottom right, #ffffff, #f3f9ff);
+}
+
+.card:nth-child(1)::before {
+    background-color: #2196F3;
+}
+
+.card:nth-child(1) .amount {
+    color: #1976D2;
+}
+
+/* 当季销售卡片 */
+.card:nth-child(2) {
+    background: linear-gradient(to bottom right, #ffffff, #f4fff5);
+}
+
+.card:nth-child(2)::before {
+    background-color: #4CAF50;
+}
+
+.card:nth-child(2) .amount {
+    color: #2E7D32;
+}
+
+/* 年度销售卡片 */
+.card:nth-child(3) {
+    background: linear-gradient(to bottom right, #ffffff, #fff8f0);
+}
+
+.card:nth-child(3)::before {
+    background-color: #FF9800;
+}
+
+.card:nth-child(3) .amount {
+    color: #F57C00;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card-label {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+}
+
+.amount {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* 添加图标 */
+.card-icon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: rgba(0,0,0,0.1);
+    font-size: 2.5rem;
+}
+
+.content-section {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.section-header {
+    margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    color: #1a1a1a;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input {
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    border-color: #2196F3;
+    outline: none;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.submit-btn {
+    background-color: #2196F3;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+    background-color: #1976D2;
+}
+
+.sales-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.sales-table th,
+.sales-table td {
+    padding: 0.75rem 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sales-table th {
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status.active {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.status.inactive {
+    background-color: #FFEBEE;
+    color: #C62828;
+}
+
+/* 金额编辑样式 */
+.amount-cell {
+    position: relative;
+}
+
+.editable-amount {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.edit-btn {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    cursor: pointer;
+    color: #666;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.2s;
+}
+
+.amount-cell:hover .edit-btn {
+    opacity: 1;
+}
+
+.edit-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+/* 操作按钮样式更新 */
+.actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-start;
+}
+
+.action-btn {
+    padding: 0.25rem;
+    border-radius: 4px;
+}
+
+/* 管理后台特定样式 */
+.admin-dashboard {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.dashboard-header {
+    margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 1.5rem;
+}
+
+/* 过滤器控件样式 */
+.filter-controls {
+    margin-bottom: 2rem;
+}
+
+.filter-group {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    display: inline-flex;
+}
+
+.filter-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    background: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: #666;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    background: #fff;
+    color: #1a1a1a;
+}
+
+.filter-btn.active {
+    background: #fff;
+    color: #1a1a1a;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot.pending { background-color: #f57c00; }
+.dot.approved { background-color: #2196F3; }
+.dot.rejected { background-color: #dc3545; }
+
+/* 表格样式 */
+.content-section {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.sales-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.sales-table th {
+    background: #f8f9fa;
+    padding: 1rem 1.5rem;
+    font-weight: 500;
+    color: #666;
+    text-align: left;
+    font-size: 0.875rem;
+}
+
+.sales-table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* 状态标签样式 */
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.status-badge.pending {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.status-badge.approved {
+    background-color: #e3f2fd;
+    color: #2196F3;
+}
+
+.status-badge.rejected {
+    background-color: #ffebee;
+    color: #dc3545;
+}
+
+/* 操作按钮样式 */
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.action-btn:hover {
+    background-color: #f8f9fa;
+}
+
+.action-btn.approve .material-icons {
+    color: #2196F3;
+}
+
+.action-btn.reject .material-icons {
+    color: #dc3545;
+}
+
+.status-icon {
+    font-size: 1.25rem;
+}
+
+.status-icon.approved {
+    color: #2196F3;
+}
+
+.status-icon.rejected {
+    color: #dc3545;
+}
+
+/* 销售员选择样式 */
+.salesperson-select {
+    position: relative;
+    width: 100%;
+}
+
+.salesperson-select select {
+    width: 100%;
+    padding: 0.75rem;
+    padding-right: 3rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    appearance: none;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.salesperson-select select:hover {
+    border-color: #2196F3;
+}
+
+.salesperson-select select:focus {
+    border-color: #2196F3;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+.salesperson-select::after {
+    content: '';
+    position: absolute;
+    right: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 24px;
+    background-color: #e0e0e0;
+}
+
+.icon-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    color: #2196F3;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.icon-btn:hover {
+    background-color: #f5f5f5;
+}
+
+/* 模态框样式更新 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 420px;
+    margin: 2vh auto;
+    position: relative;
+}
+
+.modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.modal-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #1a1a1a;
+    transition: all 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #2196F3;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+/* 状态选择器样式 */
+.form-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23666' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 24px;
+    padding-right: 2.5rem;
+}
+
+/* Sales Targets 部分样式 */
+.target-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+.target-section h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 1rem 0;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* 保存按钮样式 */
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.submit-btn {
+    min-width: 100px;
+    padding: 0.75rem 1.5rem;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.submit-btn:hover {
+    background: #1976D2;
+}
+
+/* 关闭按钮样式 */
+.close-btn {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: #666;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.close-btn:hover {
+    background-color: #f5f5f5;
+}
+
+/* 数字输入框样式 */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* 排名标签样式 */
+.ranking-tabs {
+    display: flex;
+    gap: 0.5rem;
+    background: #f8f9fa;
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+
+.tab-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    background: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background: white;
+    color: #1a1a1a;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* 状态大写样式 */
+.status-badge {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* 头部操作按钮样式 */
+.header-actions {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.action-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background-color: #f8f9fa;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.action-button:hover {
+    background-color: #e9ecef;
+}
+
+.action-button.primary {
+    background-color: #2196F3;
+    color: white;
+}
+
+.action-button.primary:hover {
+    background-color: #1976D2;
+}
+
+.action-button .material-icons {
+    font-size: 1.25rem;
+}
+
+/* 表单文本域样式 */
+.form-group textarea {
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+.form-group textarea:focus {
+    border-color: #2196F3;
+    outline: none;
+}
+
+/* 修改销售记录显示，添加类型标识 */
+.sale-type {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background-color: #e3f2fd;
+    color: #1976D2;
+    margin-left: 0.5rem;
+}
+
+.sale-type.company {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+/* 销售排名表格样式 */
+.ranking-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.ranking-table th,
+.ranking-table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.ranking-table th {
+    font-weight: 500;
+    color: #666;
+    font-size: 0.875rem;
+    background: #f8f9fa;
+}
+
+/* 数字列右对齐 */
+.ranking-table th:nth-child(3),
+.ranking-table th:nth-child(4),
+.ranking-table th:nth-child(6),
+.ranking-table td:nth-child(3),
+.ranking-table td:nth-child(4),
+.ranking-table td:nth-child(6) {
+    text-align: right;
+}
+
+/* 进度条列居中 */
+.ranking-table th:nth-child(5),
+.ranking-table td:nth-child(5) {
+    text-align: center;
+}
+
+/* 排名列居中 */
+.ranking-table th:nth-child(1),
+.ranking-table td:nth-child(1) {
+    text-align: center;
+    width: 80px;
+}
+
+/* 销售人员信息列样式 */
+.ranking-table .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-right: 1rem;
+}
+
+.ranking-table .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #f0f0f0;
+}
+
+.ranking-table .person-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.ranking-table .name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.ranking-table .email {
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 进度条样式 */
+.ranking-table .progress-cell {
+    position: relative;
+    width: 120px;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.ranking-table .progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: #2196F3;
+    border-radius: 3px;
+}
+
+.ranking-table .progress-text {
+    position: absolute;
+    right: 0;
+    top: -18px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 排名样式 */
+.rank {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 0.875rem;
+    margin: 0 auto;
+}
+
+.rank-1 .rank {
+    background-color: #FFD700;
+    color: #1a1a1a;
+}
+
+.rank-2 .rank {
+    background-color: #C0C0C0;
+    color: #1a1a1a;
+}
+
+.rank-3 .rank {
+    background-color: #CD7F32;
+    color: white;
+}
+
+/* 过滤器样式 */
+.ranking-filter {
+    display: flex;
+    gap: 0.5rem;
+    background: #f8f9fa;
+    padding: 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.ranking-filter .filter-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ranking-filter .filter-btn:hover {
+    background: #fff;
+    color: #1a1a1a;
+}
+
+.ranking-filter .filter-btn.active {
+    background: #fff;
+    color: #1a1a1a;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* 目标卡片样式 */
+.target-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.target-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.target-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.target-header .material-icons {
+    font-size: 1.5rem;
+}
+
+.target-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.target-numbers {
+    margin-bottom: 1rem;
+}
+
+.target-numbers .achieved {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #2196F3;
+    margin-bottom: 0.25rem;
+}
+
+.target-numbers .target {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.progress-container {
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #2196F3;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.remaining {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+}
+
+.remaining .label {
+    color: #666;
+}
+
+.remaining .value {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+/* 月度目标卡片 */
+.target-card.monthly .achieved,
+.target-card.monthly .progress-bar {
+    color: #2196F3;
+    background-color: #2196F3;
+}
+
+/* 季度目标卡片 */
+.target-card.quarterly .achieved,
+.target-card.quarterly .progress-bar {
+    color: #4CAF50;
+    background-color: #4CAF50;
+}
+
+/* 年度目标卡片 */
+.target-card.yearly .achieved,
+.target-card.yearly .progress-bar {
+    color: #FF9800;
+    background-color: #FF9800;
+}
+
+/* 个人业绩表格样式 */
+.performance-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.performance-table th,
+.performance-table td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.performance-table th {
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #666;
+}
+
+.progress-cell {
+    position: relative;
+    width: 150px;
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-cell .progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+}
+
+.progress-cell .progress-text {
+    position: absolute;
+    right: -40px;
+    top: -4px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 排名样式 */
+.rank {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background: #f8f9fa;
+    color: #666;
+}
+
+.rank.top-1 {
+    background: #FFF3E0;
+    color: #F57C00;
+}
+
+.rank.top-2 {
+    background: #F5F5F5;
+    color: #757575;
+}
+
+.rank.top-3 {
+    background: #FBE9E7;
+    color: #D84315;
+}
+
+/* 目标设置模态框样式 */
+.target-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.target-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.target-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 1rem 0;
+}
+
+.individual-target-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.individual-target-row:last-child {
+    margin-bottom: 0;
+}
+
+.target-inputs {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.target-inputs .form-group {
+    margin: 0;
+}
+
+.target-inputs input {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.individual-targets {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* 调整滚动条样式 */
+.individual-targets::-webkit-scrollbar {
+    width: 6px;
+}
+
+.individual-targets::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.individual-targets::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.individual-targets::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
+
+/* 更新目标设置模态框样式 */
+#targetModal .modal-content {
+    max-width: 800px;  /* 增加模态框宽度 */
+    width: 95%;
+    margin: 2vh auto;
+}
+
+#targetModal .form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+#targetModal .form-group input {
+    width: 100%;  /* 修正输入框宽度 */
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+/* 公司目标部分样式 */
+.target-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.target-section h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 1.5rem 0;
+}
+
+/* 个人目标行样式 */
+.individual-target-row {
+    display: grid;
+    grid-template-columns: 300px 1fr;  /* 调整列宽分配 */
+    gap: 2rem;
+    padding: 1.25rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
+.individual-target-row:last-child {
+    margin-bottom: 0;
+}
+
+/* 销售人员信息样式 */
+.individual-target-row .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.individual-target-row .avatar {
+    width: 48px;  /* 增大头像尺寸 */
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.individual-target-row .person-details .name {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+}
+
+.individual-target-row .person-details .email {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+/* 目标输入区域样式 */
+.target-inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.target-inputs .form-group {
+    margin: 0;
+}
+
+.target-inputs label {
+    display: block;
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.target-inputs input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.target-inputs input:focus {
+    border-color: #2196F3;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+/* 调整滚动区域 */
+.individual-targets {
+    max-height: 500px;  /* 增加最大高度 */
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    margin: 0 -0.5rem;  /* 补偿内边距 */
+}
+
+/* 保存按钮样式 */
+#targetModal .form-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+#targetModal .submit-btn {
+    min-width: 120px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
+/* 更新卡片内容样式 */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.target-info {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.progress-container {
+    position: relative;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: currentColor;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    position: absolute;
+    right: 0;
+    top: -18px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 调整卡片颜色 */
+.card:nth-child(1) .progress-bar {
+    background-color: #2196F3;
+}
+
+.card:nth-child(2) .progress-bar {
+    background-color: #4CAF50;
+}
+
+.card:nth-child(3) .progress-bar {
+    background-color: #FF9800;
+}
+
+/* 状态样式 */
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status.active {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.status.inactive {
+    background-color: #FFEBEE;
+    color: #C62828;
+}
+
+/* 操作按钮样式 */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;  /* 靠右对齐 */
+}
+
+.action-buttons .icon-btn {
+    padding: 4px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.action-buttons .icon-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+.action-buttons .icon-btn.delete {
+    color: #D32F2F;
+}
+
+.action-buttons .icon-btn.delete:hover {
+    background-color: #FFEBEE;
+}
+
+/* 可点击行样式 */
+.clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.clickable-row:hover {
+    background-color: #f8f9fa;
+}
+
+/* 更新操作按钮样式 */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.action-buttons .icon-btn {
+    padding: 4px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.action-buttons .icon-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+/* 阻止按钮点击事件冒泡 */
+.action-buttons button {
+    position: relative;
+    z-index: 1;
+}
+
+.action-buttons button:hover {
+    z-index: 2;
+}
+
+/* 更新头像上传样式 */
+.avatar-upload {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1.5rem;
+    position: relative;
+    cursor: pointer;
+}
+
+.avatar-upload img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+}
+
+.avatar-upload .upload-btn {
+    position: absolute;
+    right: -4px;
+    bottom: -4px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #2196F3;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.avatar-upload .upload-btn:hover {
+    background: #1976D2;
+    transform: scale(1.05);
+}
+
+.avatar-upload .upload-btn .material-icons {
+    color: white;
+    font-size: 18px;
+}
+
+.avatar-upload input[type="file"] {
+    display: none;
+}
+
+/* 调整目标输入框布局 */
+.target-section .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.target-section input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 保存按钮样式 */
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.submit-btn {
+    min-width: 100px;
+    padding: 0.75rem 1.5rem;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.submit-btn:hover {
+    background: #1976D2;
+}
+
+/* 销售记录表格样式 */
+.sales-table .salesperson-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sales-table .salesperson-info .name {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.sales-table .salesperson-info .remarks {
+    font-size: 0.875rem;
+    color: #666;
+    font-style: italic;
+}
+
+.sales-table .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.sales-table .icon-btn {
+    padding: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.sales-table .icon-btn.approve {
+    color: #4CAF50;
+}
+
+.sales-table .icon-btn.approve:hover {
+    background-color: #E8F5E9;
+}
+
+.sales-table .icon-btn.reject {
+    color: #F44336;
+}
+
+.sales-table .icon-btn.reject:hover {
+    background-color: #FFEBEE;
+}
+
+.status.pending {
+    background-color: #FFF3E0;
+    color: #F57C00;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    font-style: italic;
+}
+
+/* 销售人员列表表格样式 */
+.salespeople-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.salespeople-table th,
+.salespeople-table td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.salespeople-table th {
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+/* 销售人员信息样式 */
+.salespeople-table .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.salespeople-table .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.salespeople-table .person-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.salespeople-table .name {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.salespeople-table .email {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+/* 目标金额列样式 */
+.salespeople-table td:nth-child(2),
+.salespeople-table td:nth-child(3),
+.salespeople-table td:nth-child(4) {
+    text-align: right;
+    font-weight: 500;
+}
+
+/* 状态列样式 */
+.salespeople-table .status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.salespeople-table .status.active {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.salespeople-table .status.inactive {
+    background-color: #FFEBEE;
+    color: #C62828;
+}
+
+/* 操作按钮样式 */
+.salespeople-table .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.salespeople-table .icon-btn {
+    padding: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.salespeople-table .icon-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+/* 可点击行样式 */
+.salespeople-table .clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.salespeople-table .clickable-row:hover {
+    background-color: #f8f9fa;
+}
+
+/* 个人业绩表格样式 */
+.ranking-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.ranking-table th,
+.ranking-table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.ranking-table th {
+    font-weight: 500;
+    color: #666;
+    font-size: 0.875rem;
+    background: #f8f9fa;
+}
+
+/* 数字列右对齐 */
+.ranking-table th:nth-child(3),
+.ranking-table th:nth-child(4),
+.ranking-table th:nth-child(6),
+.ranking-table td:nth-child(3),
+.ranking-table td:nth-child(4),
+.ranking-table td:nth-child(6) {
+    text-align: right;
+}
+
+/* 进度条列居中 */
+.ranking-table th:nth-child(5),
+.ranking-table td:nth-child(5) {
+    text-align: center;
+}
+
+/* 排名列居中 */
+.ranking-table th:nth-child(1),
+.ranking-table td:nth-child(1) {
+    text-align: center;
+    width: 80px;
+}
+
+/* 销售人员信息列样式 */
+.ranking-table .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-right: 1rem;
+}
+
+.ranking-table .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #f0f0f0;
+}
+
+.ranking-table .person-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.ranking-table .name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.ranking-table .email {
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 进度条样式 */
+.ranking-table .progress-cell {
+    position: relative;
+    width: 120px;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.ranking-table .progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: #2196F3;
+    border-radius: 3px;
+}
+
+.ranking-table .progress-text {
+    position: absolute;
+    right: 0;
+    top: -18px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 排名样式 */
+.rank {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 0.875rem;
+    margin: 0 auto;
+}
+
+.rank-1 .rank {
+    background-color: #FFD700;
+    color: #1a1a1a;
+}
+
+.rank-2 .rank {
+    background-color: #C0C0C0;
+    color: #1a1a1a;
+}
+
+.rank-3 .rank {
+    background-color: #CD7F32;
+    color: white;
+}
+
+/* 过滤器样式 */
+.ranking-filter {
+    display: flex;
+    gap: 0.5rem;
+    background: #f8f9fa;
+    padding: 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.ranking-filter .filter-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ranking-filter .filter-btn:hover {
+    background: #fff;
+    color: #1a1a1a;
+}
+
+.ranking-filter .filter-btn.active {
+    background: #fff;
+    color: #1a1a1a;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* 目标卡片样式 */
+.target-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.target-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.target-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.target-header .material-icons {
+    font-size: 1.5rem;
+}
+
+.target-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.target-numbers {
+    margin-bottom: 1rem;
+}
+
+.target-numbers .achieved {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #2196F3;
+    margin-bottom: 0.25rem;
+}
+
+.target-numbers .target {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.progress-container {
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #2196F3;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.remaining {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+}
+
+.remaining .label {
+    color: #666;
+}
+
+.remaining .value {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+/* 月度目标卡片 */
+.target-card.monthly .achieved,
+.target-card.monthly .progress-bar {
+    color: #2196F3;
+    background-color: #2196F3;
+}
+
+/* 季度目标卡片 */
+.target-card.quarterly .achieved,
+.target-card.quarterly .progress-bar {
+    color: #4CAF50;
+    background-color: #4CAF50;
+}
+
+/* 年度目标卡片 */
+.target-card.yearly .achieved,
+.target-card.yearly .progress-bar {
+    color: #FF9800;
+    background-color: #FF9800;
+}
+
+/* 个人业绩表格样式 */
+.performance-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.performance-table th,
+.performance-table td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.performance-table th {
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #666;
+}
+
+.progress-cell {
+    position: relative;
+    width: 150px;
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-cell .progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+}
+
+.progress-cell .progress-text {
+    position: absolute;
+    right: -40px;
+    top: -4px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 排名样式 */
+.rank {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background: #f8f9fa;
+    color: #666;
+}
+
+.rank.top-1 {
+    background: #FFF3E0;
+    color: #F57C00;
+}
+
+.rank.top-2 {
+    background: #F5F5F5;
+    color: #757575;
+}
+
+.rank.top-3 {
+    background: #FBE9E7;
+    color: #D84315;
+}
+
+/* 目标设置模态框样式 */
+.target-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.target-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.target-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 1rem 0;
+}
+
+.individual-target-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.individual-target-row:last-child {
+    margin-bottom: 0;
+}
+
+.target-inputs {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.target-inputs .form-group {
+    margin: 0;
+}
+
+.target-inputs input {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.individual-targets {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* 调整滚动条样式 */
+.individual-targets::-webkit-scrollbar {
+    width: 6px;
+}
+
+.individual-targets::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.individual-targets::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.individual-targets::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
+
+/* 更新目标设置模态框样式 */
+#targetModal .modal-content {
+    max-width: 800px;  /* 增加模态框宽度 */
+    width: 95%;
+    margin: 2vh auto;
+}
+
+#targetModal .form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+#targetModal .form-group input {
+    width: 100%;  /* 修正输入框宽度 */
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+/* 公司目标部分样式 */
+.target-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.target-section h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 1.5rem 0;
+}
+
+/* 个人目标行样式 */
+.individual-target-row {
+    display: grid;
+    grid-template-columns: 300px 1fr;  /* 调整列宽分配 */
+    gap: 2rem;
+    padding: 1.25rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
+.individual-target-row:last-child {
+    margin-bottom: 0;
+}
+
+/* 销售人员信息样式 */
+.individual-target-row .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.individual-target-row .avatar {
+    width: 48px;  /* 增大头像尺寸 */
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.individual-target-row .person-details .name {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+}
+
+.individual-target-row .person-details .email {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+/* 目标输入区域样式 */
+.target-inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.target-inputs .form-group {
+    margin: 0;
+}
+
+.target-inputs label {
+    display: block;
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.target-inputs input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.target-inputs input:focus {
+    border-color: #2196F3;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+/* 调整滚动区域 */
+.individual-targets {
+    max-height: 500px;  /* 增加最大高度 */
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    margin: 0 -0.5rem;  /* 补偿内边距 */
+}
+
+/* 保存按钮样式 */
+#targetModal .form-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+#targetModal .submit-btn {
+    min-width: 120px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
+/* 更新卡片内容样式 */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.target-info {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.progress-container {
+    position: relative;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: currentColor;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    position: absolute;
+    right: 0;
+    top: -18px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 调整卡片颜色 */
+.card:nth-child(1) .progress-bar {
+    background-color: #2196F3;
+}
+
+.card:nth-child(2) .progress-bar {
+    background-color: #4CAF50;
+}
+
+.card:nth-child(3) .progress-bar {
+    background-color: #FF9800;
+}
+
+/* 状态样式 */
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status.active {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.status.inactive {
+    background-color: #FFEBEE;
+    color: #C62828;
+}
+
+/* 操作按钮样式 */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;  /* 靠右对齐 */
+}
+
+.action-buttons .icon-btn {
+    padding: 4px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.action-buttons .icon-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+.action-buttons .icon-btn.delete {
+    color: #D32F2F;
+}
+
+.action-buttons .icon-btn.delete:hover {
+    background-color: #FFEBEE;
+}
+
+/* 可点击行样式 */
+.clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.clickable-row:hover {
+    background-color: #f8f9fa;
+}
+
+/* 更新操作按钮样式 */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.action-buttons .icon-btn {
+    padding: 4px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.action-buttons .icon-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+/* 阻止按钮点击事件冒泡 */
+.action-buttons button {
+    position: relative;
+    z-index: 1;
+}
+
+.action-buttons button:hover {
+    z-index: 2;
+}
+
+/* 更新头像上传样式 */
+.avatar-upload {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1.5rem;
+    position: relative;
+    cursor: pointer;
+}
+
+.avatar-upload img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+}
+
+.avatar-upload .upload-btn {
+    position: absolute;
+    right: -4px;
+    bottom: -4px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #2196F3;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.avatar-upload .upload-btn:hover {
+    background: #1976D2;
+    transform: scale(1.05);
+}
+
+.avatar-upload .upload-btn .material-icons {
+    color: white;
+    font-size: 18px;
+}
+
+.avatar-upload input[type="file"] {
+    display: none;
+}
+
+/* 调整目标输入框布局 */
+.target-section .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.target-section input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 保存按钮样式 */
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.submit-btn {
+    min-width: 100px;
+    padding: 0.75rem 1.5rem;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.submit-btn:hover {
+    background: #1976D2;
+}
+
+/* 销售记录表格样式 */
+.sales-table .salesperson-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sales-table .salesperson-info .name {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.sales-table .salesperson-info .remarks {
+    font-size: 0.875rem;
+    color: #666;
+    font-style: italic;
+}
+
+.sales-table .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.sales-table .icon-btn {
+    padding: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.sales-table .icon-btn.approve {
+    color: #4CAF50;
+}
+
+.sales-table .icon-btn.approve:hover {
+    background-color: #E8F5E9;
+}
+
+.sales-table .icon-btn.reject {
+    color: #F44336;
+}
+
+.sales-table .icon-btn.reject:hover {
+    background-color: #FFEBEE;
+}
+
+.status.pending {
+    background-color: #FFF3E0;
+    color: #F57C00;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    font-style: italic;
+}
+
+/* 销售人员列表表格样式 */
+.salespeople-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.salespeople-table th,
+.salespeople-table td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.salespeople-table th {
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+/* 销售人员信息样式 */
+.salespeople-table .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.salespeople-table .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.salespeople-table .person-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.salespeople-table .name {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.salespeople-table .email {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+/* 目标金额列样式 */
+.salespeople-table td:nth-child(2),
+.salespeople-table td:nth-child(3),
+.salespeople-table td:nth-child(4) {
+    text-align: right;
+    font-weight: 500;
+}
+
+/* 状态列样式 */
+.salespeople-table .status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.salespeople-table .status.active {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.salespeople-table .status.inactive {
+    background-color: #FFEBEE;
+    color: #C62828;
+}
+
+/* 操作按钮样式 */
+.salespeople-table .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.salespeople-table .icon-btn {
+    padding: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.salespeople-table .icon-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+/* 可点击行样式 */
+.salespeople-table .clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.salespeople-table .clickable-row:hover {
+    background-color: #f8f9fa;
+}
+
+/* 个人业绩表格样式 */
+.ranking-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.ranking-table th,
+.ranking-table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.ranking-table th {
+    font-weight: 500;
+    color: #666;
+    font-size: 0.875rem;
+    background: #f8f9fa;
+}
+
+/* 数字列右对齐 */
+.ranking-table th:nth-child(3),
+.ranking-table th:nth-child(4),
+.ranking-table th:nth-child(6),
+.ranking-table td:nth-child(3),
+.ranking-table td:nth-child(4),
+.ranking-table td:nth-child(6) {
+    text-align: right;
+}
+
+/* 进度条列居中 */
+.ranking-table th:nth-child(5),
+.ranking-table td:nth-child(5) {
+    text-align: center;
+}
+
+/* 排名列居中 */
+.ranking-table th:nth-child(1),
+.ranking-table td:nth-child(1) {
+    text-align: center;
+    width: 80px;
+}
+
+/* 销售人员信息列样式 */
+.ranking-table .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-right: 1rem;
+}
+
+.ranking-table .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #f0f0f0;
+}
+
+.ranking-table .person-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.ranking-table .name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.ranking-table .email {
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 进度条样式 */
+.ranking-table .progress-cell {
+    position: relative;
+    width: 120px;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.ranking-table .progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: #2196F3;
+    border-radius: 3px;
+}
+
+.ranking-table .progress-text {
+    position: absolute;
+    right: 0;
+    top: -18px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 排名样式 */
+.rank {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 0.875rem;
+    margin: 0 auto;
+}
+
+.rank-1 .rank {
+    background-color: #FFD700;
+    color: #1a1a1a;
+}
+
+.rank-2 .rank {
+    background-color: #C0C0C0;
+    color: #1a1a1a;
+}
+
+.rank-3 .rank {
+    background-color: #CD7F32;
+    color: white;
+}
+
+/* 过滤器样式 */
+.ranking-filter {
+    display: flex;
+    gap: 0.5rem;
+    background: #f8f9fa;
+    padding: 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.ranking-filter .filter-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ranking-filter .filter-btn:hover {
+    background: #fff;
+    color: #1a1a1a;
+}
+
+.ranking-filter .filter-btn.active {
+    background: #fff;
+    color: #1a1a1a;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* 目标卡片样式 */
+.target-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.target-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.target-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.target-header .material-icons {
+    font-size: 1.5rem;
+}
+
+.target-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.target-numbers {
+    margin-bottom: 1rem;
+}
+
+.target-numbers .achieved {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #2196F3;
+    margin-bottom: 0.25rem;
+}
+
+.target-numbers .target {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.progress-container {
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #2196F3;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.remaining {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+}
+
+.remaining .label {
+    color: #666;
+}
+
+.remaining .value {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+/* 月度目标卡片 */
+.target-card.monthly .achieved,
+.target-card.monthly .progress-bar {
+    color: #2196F3;
+    background-color: #2196F3;
+}
+
+/* 季度目标卡片 */
+.target-card.quarterly .achieved,
+.target-card.quarterly .progress-bar {
+    color: #4CAF50;
+    background-color: #4CAF50;
+}
+
+/* 年度目标卡片 */
+.target-card.yearly .achieved,
+.target-card.yearly .progress-bar {
+    color: #FF9800;
+    background-color: #FF9800;
+}
+
+/* 个人业绩表格样式 */
+.performance-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.performance-table th,
+.performance-table td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.performance-table th {
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #666;
+}
+
+.progress-cell {
+    position: relative;
+    width: 150px;
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-cell .progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+}
+
+.progress-cell .progress-text {
+    position: absolute;
+    right: -40px;
+    top: -4px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 排名样式 */
+.rank {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background: #f8f9fa;
+    color: #666;
+}
+
+.rank.top-1 {
+    background: #FFF3E0;
+    color: #F57C00;
+}
+
+.rank.top-2 {
+    background: #F5F5F5;
+    color: #757575;
+}
+
+.rank.top-3 {
+    background: #FBE9E7;
+    color: #D84315;
+}
+
+/* 目标设置模态框样式 */
+.target-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.target-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.target-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 1rem 0;
+}
+
+.individual-target-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.individual-target-row:last-child {
+    margin-bottom: 0;
+}
+
+.target-inputs {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.target-inputs .form-group {
+    margin: 0;
+}
+
+.target-inputs input {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.individual-targets {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* 调整滚动条样式 */
+.individual-targets::-webkit-scrollbar {
+    width: 6px;
+}
+
+.individual-targets::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.individual-targets::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.individual-targets::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
+
+/* 更新目标设置模态框样式 */
+#targetModal .modal-content {
+    max-width: 800px;  /* 增加模态框宽度 */
+    width: 95%;
+    margin: 2vh auto;
+}
+
+#targetModal .form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+#targetModal .form-group input {
+    width: 100%;  /* 修正输入框宽度 */
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+/* 公司目标部分样式 */
+.target-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.target-section h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 1.5rem 0;
+}
+
+/* 个人目标行样式 */
+.individual-target-row {
+    display: grid;
+    grid-template-columns: 300px 1fr;  /* 调整列宽分配 */
+    gap: 2rem;
+    padding: 1.25rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
+.individual-target-row:last-child {
+    margin-bottom: 0;
+}
+
+/* 销售人员信息样式 */
+.individual-target-row .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.individual-target-row .avatar {
+    width: 48px;  /* 增大头像尺寸 */
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.individual-target-row .person-details .name {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+}
+
+.individual-target-row .person-details .email {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+/* 目标输入区域样式 */
+.target-inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.target-inputs .form-group {
+    margin: 0;
+}
+
+.target-inputs label {
+    display: block;
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.target-inputs input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.target-inputs input:focus {
+    border-color: #2196F3;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+/* 调整滚动区域 */
+.individual-targets {
+    max-height: 500px;  /* 增加最大高度 */
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    margin: 0 -0.5rem;  /* 补偿内边距 */
+}
+
+/* 保存按钮样式 */
+#targetModal .form-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+#targetModal .submit-btn {
+    min-width: 120px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
+/* 更新卡片内容样式 */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.target-info {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.progress-container {
+    position: relative;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: currentColor;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    position: absolute;
+    right: 0;
+    top: -18px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 调整卡片颜色 */
+.card:nth-child(1) .progress-bar {
+    background-color: #2196F3;
+}
+
+.card:nth-child(2) .progress-bar {
+    background-color: #4CAF50;
+}
+
+.card:nth-child(3) .progress-bar {
+    background-color: #FF9800;
+}
+
+/* 状态样式 */
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status.active {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.status.inactive {
+    background-color: #FFEBEE;
+    color: #C62828;
+}
+
+/* 操作按钮样式 */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;  /* 靠右对齐 */
+}
+
+.action-buttons .icon-btn {
+    padding: 4px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.action-buttons .icon-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+.action-buttons .icon-btn.delete {
+    color: #D32F2F;
+}
+
+.action-buttons .icon-btn.delete:hover {
+    background-color: #FFEBEE;
+}
+
+/* 可点击行样式 */
+.clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.clickable-row:hover {
+    background-color: #f8f9fa;
+}
+
+/* 更新操作按钮样式 */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.action-buttons .icon-btn {
+    padding: 4px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.action-buttons .icon-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+/* 阻止按钮点击事件冒泡 */
+.action-buttons button {
+    position: relative;
+    z-index: 1;
+}
+
+.action-buttons button:hover {
+    z-index: 2;
+}
+
+/* 更新头像上传样式 */
+.avatar-upload {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1.5rem;
+    position: relative;
+    cursor: pointer;
+}
+
+.avatar-upload img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+}
+
+.avatar-upload .upload-btn {
+    position: absolute;
+    right: -4px;
+    bottom: -4px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #2196F3;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.avatar-upload .upload-btn:hover {
+    background: #1976D2;
+    transform: scale(1.05);
+}
+
+.avatar-upload .upload-btn .material-icons {
+    color: white;
+    font-size: 18px;
+}
+
+.avatar-upload input[type="file"] {
+    display: none;
+}
+
+/* 调整目标输入框布局 */
+.target-section .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.target-section input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 保存按钮样式 */
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.submit-btn {
+    min-width: 100px;
+    padding: 0.75rem 1.5rem;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.submit-btn:hover {
+    background: #1976D2;
+}
+
+/* 销售记录表格样式 */
+.sales-table .salesperson-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sales-table .salesperson-info .name {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.sales-table .salesperson-info .remarks {
+    font-size: 0.875rem;
+    color: #666;
+    font-style: italic;
+}
+
+.sales-table .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.sales-table .icon-btn {
+    padding: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.sales-table .icon-btn.approve {
+    color: #4CAF50;
+}
+
+.sales-table .icon-btn.approve:hover {
+    background-color: #E8F5E9;
+}
+
+.sales-table .icon-btn.reject {
+    color: #F44336;
+}
+
+.sales-table .icon-btn.reject:hover {
+    background-color: #FFEBEE;
+}
+
+.status.pending {
+    background-color: #FFF3E0;
+    color: #F57C00;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    font-style: italic;
+}
+
+/* 销售人员列表表格样式 */
+.salespeople-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.salespeople-table th,
+.salespeople-table td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.salespeople-table th {
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+/* 销售人员信息样式 */
+.salespeople-table .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.salespeople-table .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.salespeople-table .person-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.salespeople-table .name {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.salespeople-table .email {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+/* 目标金额列样式 */
+.salespeople-table td:nth-child(2),
+.salespeople-table td:nth-child(3),
+.salespeople-table td:nth-child(4) {
+    text-align: right;
+    font-weight: 500;
+}
+
+/* 状态列样式 */
+.salespeople-table .status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.salespeople-table .status.active {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.salespeople-table .status.inactive {
+    background-color: #FFEBEE;
+    color: #C62828;
+}
+
+/* 操作按钮样式 */
+.salespeople-table .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.salespeople-table .icon-btn {
+    padding: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.salespeople-table .icon-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+/* 可点击行样式 */
+.salespeople-table .clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.salespeople-table .clickable-row:hover {
+    background-color: #f8f9fa;
+}
+
+/* 个人业绩表格样式 */
+.ranking-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.ranking-table th,
+.ranking-table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.ranking-table th {
+    font-weight: 500;
+    color: #666;
+    font-size: 0.875rem;
+    background: #f8f9fa;
+}
+
+/* 数字列右对齐 */
+.ranking-table th:nth-child(3),
+.ranking-table th:nth-child(4),
+.ranking-table th:nth-child(6),
+.ranking-table td:nth-child(3),
+.ranking-table td:nth-child(4),
+.ranking-table td:nth-child(6) {
+    text-align: right;
+}
+
+/* 进度条列居中 */
+.ranking-table th:nth-child(5),
+.ranking-table td:nth-child(5) {
+    text-align: center;
+}
+
+/* 排名列居中 */
+.ranking-table th:nth-child(1),
+.ranking-table td:nth-child(1) {
+    text-align: center;
+    width: 80px;
+}
+
+/* 销售人员信息列样式 */
+.ranking-table .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-right: 1rem;
+}
+
+.ranking-table .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #f0f0f0;
+}
+
+.ranking-table .person-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.ranking-table .name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.ranking-table .email {
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 进度条样式 */
+.ranking-table .progress-cell {
+    position: relative;
+    width: 120px;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.ranking-table .progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: #2196F3;
+    border-radius: 3px;
+}
+
+.ranking-table .progress-text {
+    position: absolute;
+    right: 0;
+    top: -18px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 排名样式 */
+.rank {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 0.875rem;
+    margin: 0 auto;
+}
+
+.rank-1 .rank {
+    background-color: #FFD700;
+    color: #1a1a1a;
+}
+
+.rank-2 .rank {
+    background-color: #C0C0C0;
+    color: #1a1a1a;
+}
+
+.rank-3 .rank {
+    background-color: #CD7F32;
+    color: white;
+}
+
+/* 过滤器样式 */
+.ranking-filter {
+    display: flex;
+    gap: 0.5rem;
+    background: #f8f9fa;
+    padding: 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.ranking-filter .filter-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ranking-filter .filter-btn:hover {
+    background: #fff;
+    color: #1a1a1a;
+}
+
+.ranking-filter .filter-btn.active {
+    background: #fff;
+    color: #1a1a1a;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* 目标卡片样式 */
+.target-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.target-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.target-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.target-header .material-icons {
+    font-size: 1.5rem;
+}
+
+.target-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.target-numbers {
+    margin-bottom: 1rem;
+}
+
+.target-numbers .achieved {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #2196F3;
+    margin-bottom: 0.25rem;
+}
+
+.target-numbers .target {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.progress-container {
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #2196F3;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.remaining {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+}
+
+.remaining .label {
+    color: #666;
+}
+
+.remaining .value {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+/* 月度目标卡片 */
+.target-card.monthly .achieved,
+.target-card.monthly .progress-bar {
+    color: #2196F3;
+    background-color: #2196F3;
+}
+
+/* 季度目标卡片 */
+.target-card.quarterly .achieved,
+.target-card.quarterly .progress-bar {
+    color: #4CAF50;
+    background-color: #4CAF50;
+}
+
+/* 年度目标卡片 */
+.target-card.yearly .achieved,
+.target-card.yearly .progress-bar {
+    color: #FF9800;
+    background-color: #FF9800;
+}
+
+/* 个人业绩表格样式 */
+.performance-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.performance-table th,
+.performance-table td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.performance-table th {
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #666;
+}
+
+.progress-cell {
+    position: relative;
+    width: 150px;
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-cell .progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+}
+
+.progress-cell .progress-text {
+    position: absolute;
+    right: -40px;
+    top: -4px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 排名样式 */
+.rank {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background: #f8f9fa;
+    color: #666;
+}
+
+.rank.top-1 {
+    background: #FFF3E0;
+    color: #F57C00;
+}
+
+.rank.top-2 {
+    background: #F5F5F5;
+    color: #757575;
+}
+
+.rank.top-3 {
+    background: #FBE9E7;
+    color: #D84315;
+}
+
+/* 目标设置模态框样式 */
+.target-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.target-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.target-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 1rem 0;
+}
+
+.individual-target-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.individual-target-row:last-child {
+    margin-bottom: 0;
+}
+
+.target-inputs {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.target-inputs .form-group {
+    margin: 0;
+}
+
+.target-inputs input {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.individual-targets {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* 调整滚动条样式 */
+.individual-targets::-webkit-scrollbar {
+    width: 6px;
+}
+
+.individual-targets::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.individual-targets::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.individual-targets::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
+
+/* 更新目标设置模态框样式 */
+#targetModal .modal-content {
+    max-width: 800px;  /* 增加模态框宽度 */
+    width: 95%;
+    margin: 2vh auto;
+}
+
+#targetModal .form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+#targetModal .form-group input {
+    width: 100%;  /* 修正输入框宽度 */
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+/* 公司目标部分样式 */
+.target-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.target-section h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 1.5rem 0;
+}
+
+/* 个人目标行样式 */
+.individual-target-row {
+    display: grid;
+    grid-template-columns: 300px 1fr;  /* 调整列宽分配 */
+    gap: 2rem;
+    padding: 1.25rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
+.individual-target-row:last-child {
+    margin-bottom: 0;
+}
+
+/* 销售人员信息样式 */
+.individual-target-row .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.individual-target-row .avatar {
+    width: 48px;  /* 增大头像尺寸 */
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.individual-target-row .person-details .name {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+}
+
+.individual-target-row .person-details .email {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+/* 目标输入区域样式 */
+.target-inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.target-inputs .form-group {
+    margin: 0;
+}
+
+.target-inputs label {
+    display: block;
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.target-inputs input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.target-inputs input:focus {
+    border-color: #2196F3;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+/* 调整滚动区域 */
+.individual-targets {
+    max-height: 500px;  /* 增加最大高度 */
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    margin: 0 -0.5rem;  /* 补偿内边距 */
+}
+
+/* 保存按钮样式 */
+#targetModal .form-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+#targetModal .submit-btn {
+    min-width: 120px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
+/* 更新卡片内容样式 */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.target-info {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.progress-container {
+    position: relative;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: currentColor;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    position: absolute;
+    right: 0;
+    top: -18px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 调整卡片颜色 */
+.card:nth-child(1) .progress-bar {
+    background-color: #2196F3;
+}
+
+.card:nth-child(2) .progress-bar {
+    background-color: #4CAF50;
+}
+
+.card:nth-child(3) .progress-bar {
+    background-color: #FF9800;
+}
+
+/* 状态样式 */
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status.active {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.status.inactive {
+    background-color: #FFEBEE;
+    color: #C62828;
+}
+
+/* 操作按钮样式 */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;  /* 靠右对齐 */
+}
+
+.action-buttons .icon-btn {
+    padding: 4px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.action-buttons .icon-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+.action-buttons .icon-btn.delete {
+    color: #D32F2F;
+}
+
+.action-buttons .icon-btn.delete:hover {
+    background-color: #FFEBEE;
+}
+
+/* 可点击行样式 */
+.clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.clickable-row:hover {
+    background-color: #f8f9fa;
+}
+
+/* 更新操作按钮样式 */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.action-buttons .icon-btn {
+    padding: 4px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.action-buttons .icon-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+/* 阻止按钮点击事件冒泡 */
+.action-buttons button {
+    position: relative;
+    z-index: 1;
+}
+
+.action-buttons button:hover {
+    z-index: 2;
+}
+
+/* 更新头像上传样式 */
+.avatar-upload {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1.5rem;
+    position: relative;
+    cursor: pointer;
+}
+
+.avatar-upload img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+}
+
+.avatar-upload .upload-btn {
+    position: absolute;
+    right: -4px;
+    bottom: -4px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #2196F3;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.avatar-upload .upload-btn:hover {
+    background: #1976D2;
+    transform: scale(1.05);
+}
+
+.avatar-upload .upload-btn .material-icons {
+    color: white;
+    font-size: 18px;
+}
+
+.avatar-upload input[type="file"] {
+    display: none;
+}
+
+/* 调整目标输入框布局 */
+.target-section .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.target-section input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 保存按钮样式 */
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.submit-btn {
+    min-width: 100px;
+    padding: 0.75rem 1.5rem;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.submit-btn:hover {
+    background: #1976D2;
+}
+
+/* 销售记录表格样式 */
+.sales-table .salesperson-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sales-table .salesperson-info .name {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.sales-table .salesperson-info .remarks {
+    font-size: 0.875rem;
+    color: #666;
+    font-style: italic;
+}
+
+.sales-table .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.sales-table .icon-btn {
+    padding: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.sales-table .icon-btn.approve {
+    color: #4CAF50;
+}
+
+.sales-table .icon-btn.approve:hover {
+    background-color: #E8F5E9;
+}
+
+.sales-table .icon-btn.reject {
+    color: #F44336;
+}
+
+.sales-table .icon-btn.reject:hover {
+    background-color: #FFEBEE;
+}
+
+.status.pending {
+    background-color: #FFF3E0;
+    color: #F57C00;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    font-style: italic;
+}
+
+/* 销售人员列表表格样式 */
+.salespeople-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.salespeople-table th,
+.salespeople-table td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.salespeople-table th {
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+/* 销售人员信息样式 */
+.salespeople-table .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.salespeople-table .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.salespeople-table .person-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.salespeople-table .name {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.salespeople-table .email {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+/* 目标金额列样式 */
+.salespeople-table td:nth-child(2),
+.salespeople-table td:nth-child(3),
+.salespeople-table td:nth-child(4) {
+    text-align: right;
+    font-weight: 500;
+}
+
+/* 状态列样式 */
+.salespeople-table .status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.salespeople-table .status.active {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.salespeople-table .status.inactive {
+    background-color: #FFEBEE;
+    color: #C62828;
+}
+
+/* 操作按钮样式 */
+.salespeople-table .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.salespeople-table .icon-btn {
+    padding: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.salespeople-table .icon-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+/* 可点击行样式 */
+.salespeople-table .clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.salespeople-table .clickable-row:hover {
+    background-color: #f8f9fa;
+}
+
+/* 个人业绩表格样式 */
+.ranking-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.ranking-table th,
+.ranking-table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.ranking-table th {
+    font-weight: 500;
+    color: #666;
+    font-size: 0.875rem;
+    background: #f8f9fa;
+}
+
+/* 数字列右对齐 */
+.ranking-table th:nth-child(3),
+.ranking-table th:nth-child(4),
+.ranking-table th:nth-child(6),
+.ranking-table td:nth-child(3),
+.ranking-table td:nth-child(4),
+.ranking-table td:nth-child(6) {
+    text-align: right;
+}
+
+/* 进度条列居中 */
+.ranking-table th:nth-child(5),
+.ranking-table td:nth-child(5) {
+    text-align: center;
+}
+
+/* 排名列居中 */
+.ranking-table th:nth-child(1),
+.ranking-table td:nth-child(1) {
+    text-align: center;
+    width: 80px;
+}
+
+/* 销售人员信息列样式 */
+.ranking-table .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-right: 1rem;
+}
+
+.ranking-table .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #f0f0f0;
+}
+
+.ranking-table .person-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.ranking-table .name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.ranking-table .email {
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 进度条样式 */
+.ranking-table .progress-cell {
+    position: relative;
+    width: 120px;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.ranking-table .progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: #2196F3;
+    border-radius: 3px;
+}
+
+.ranking-table .progress-text {
+    position: absolute;
+    right: 0;
+    top: -18px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 排名样式 */
+.rank {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 0.875rem;
+    margin: 0 auto;
+}
+
+.rank-1 .rank {
+    background-color: #FFD700;
+    color: #1a1a1a;
+}
+
+.rank-2 .rank {
+    background-color: #C0C0C0;
+    color: #1a1a1a;
+}
+
+.rank-3 .rank {
+    background-color: #CD7F32;
+    color: white;
+}
+
+/* 过滤器样式 */
+.ranking-filter {
+    display: flex;
+    gap: 0.5rem;
+    background: #f8f9fa;
+    padding: 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.ranking-filter .filter-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ranking-filter .filter-btn:hover {
+    background: #fff;
+    color: #1a1a1a;
+}
+
+.ranking-filter .filter-btn.active {
+    background: #fff;
+    color: #1a1a1a;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* 目标卡片样式 */
+.target-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.target-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.target-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.target-header .material-icons {
+    font-size: 1.5rem;
+}
+
+.target-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.target-numbers {
+    margin-bottom: 1rem;
+}
+
+.target-numbers .achieved {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #2196F3;
+    margin-bottom: 0.25rem;
+}
+
+.target-numbers .target {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.progress-container {
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #2196F3;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.remaining {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+}
+
+.remaining .label {
+    color: #666;
+}
+
+.remaining .value {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+/* 月度目标卡片 */
+.target-card.monthly .achieved,
+.target-card.monthly .progress-bar {
+    color: #2196F3;
+    background-color: #2196F3;
+}
+
+/* 季度目标卡片 */
+.target-card.quarterly .achieved,
+.target-card.quarterly .progress-bar {
+    color: #4CAF50;
+    background-color: #4CAF50;
+}
+
+/* 年度目标卡片 */
+.target-card.yearly .achieved,
+.target-card.yearly .progress-bar {
+    color: #FF9800;
+    background-color: #FF9800;
+}
+
+/* 个人业绩表格样式 */
+.performance-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.performance-table th,
+.performance-table td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.performance-table th {
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #666;
+}
+
+.progress-cell {
+    position: relative;
+    width: 150px;
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-cell .progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+}
+
+.progress-cell .progress-text {
+    position: absolute;
+    right: -40px;
+    top: -4px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 排名样式 */
+.rank {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background: #f8f9fa;
+    color: #666;
+}
+
+.rank.top-1 {
+    background: #FFF3E0;
+    color: #F57C00;
+}
+
+.rank.top-2 {
+    background: #F5F5F5;
+    color: #757575;
+}
+
+.rank.top-3 {
+    background: #FBE9E7;
+    color: #D84315;
+}
+
+/* 目标设置模态框样式 */
+.target-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.target-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.target-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 1rem 0;
+}
+
+.individual-target-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.individual-target-row:last-child {
+    margin-bottom: 0;
+}
+
+.target-inputs {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.target-inputs .form-group {
+    margin: 0;
+}
+
+.target-inputs input {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.individual-targets {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* 调整滚动条样式 */
+.individual-targets::-webkit-scrollbar {
+    width: 6px;
+}
+
+.individual-targets::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.individual-targets::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.individual-targets::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
+
+/* 更新目标设置模态框样式 */
+#targetModal .modal-content {
+    max-width: 800px;  /* 增加模态框宽度 */
+    width: 95%;
+    margin: 2vh auto;
+}
+
+#targetModal .form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+#targetModal .form-group input {
+    width: 100%;  /* 修正输入框宽度 */
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+/* 公司目标部分样式 */
+.target-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.target-section h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 1.5rem 0;
+}
+
+/* 个人目标行样式 */
+.individual-target-row {
+    display: grid;
+    grid-template-columns: 300px 1fr;  /* 调整列宽分配 */
+    gap: 2rem;
+    padding: 1.25rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
+.individual-target-row:last-child {
+    margin-bottom: 0;
+}
+
+/* 销售人员信息样式 */
+.individual-target-row .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.individual-target-row .avatar {
+    width: 48px;  /* 增大头像尺寸 */
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.individual-target-row .person-details .name {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+}
+
+.individual-target-row .person-details .email {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+/* 目标输入区域样式 */
+.target-inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.target-inputs .form-group {
+    margin: 0;
+}
+
+.target-inputs label {
+    display: block;
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.target-inputs input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.target-inputs input:focus {
+    border-color: #2196F3;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+/* 调整滚动区域 */
+.individual-targets {
+    max-height: 500px;  /* 增加最大高度 */
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    margin: 0 -0.5rem;  /* 补偿内边距 */
+}
+
+/* 保存按钮样式 */
+#targetModal .form-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+#targetModal .submit-btn {
+    min-width: 120px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
+/* 更新卡片内容样式 */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.target-info {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.progress-container {
+    position: relative;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: currentColor;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    position: absolute;
+    right: 0;
+    top: -18px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 调整卡片颜色 */
+.card:nth-child(1) .progress-bar {
+    background-color: #2196F3;
+}
+
+.card:nth-child(2) .progress-bar {
+    background-color: #4CAF50;
+}
+
+.card:nth-child(3) .progress-bar {
+    background-color: #FF9800;
+}
+
+/* 状态样式 */
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status.active {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.status.inactive {
+    background-color: #FFEBEE;
+    color: #C62828;
+}
+
+/* 操作按钮样式 */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;  /* 靠右对齐 */
+}
+
+.action-buttons .icon-btn {
+    padding: 4px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.action-buttons .icon-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+.action-buttons .icon-btn.delete {
+    color: #D32F2F;
+}
+
+.action-buttons .icon-btn.delete:hover {
+    background-color: #FFEBEE;
+}
+
+/* 可点击行样式 */
+.clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.clickable-row:hover {
+    background-color: #f8f9fa;
+}
+
+/* 更新操作按钮样式 */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.action-buttons .icon-btn {
+    padding: 4px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.action-buttons .icon-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+/* 阻止按钮点击事件冒泡 */
+.action-buttons button {
+    position: relative;
+    z-index: 1;
+}
+
+.action-buttons button:hover {
+    z-index: 2;
+}
+
+/* 更新头像上传样式 */
+.avatar-upload {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1.5rem;
+    position: relative;
+    cursor: pointer;
+}
+
+.avatar-upload img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+}
+
+.avatar-upload .upload-btn {
+    position: absolute;
+    right: -4px;
+    bottom: -4px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #2196F3;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.avatar-upload .upload-btn:hover {
+    background: #1976D2;
+    transform: scale(1.05);
+}
+
+.avatar-upload .upload-btn .material-icons {
+    color: white;
+    font-size: 18px;
+}
+
+.avatar-upload input[type="file"] {
+    display: none;
+}
+
+/* 调整目标输入框布局 */
+.target-section .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.target-section input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 保存按钮样式 */
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.submit-btn {
+    min-width: 100px;
+    padding: 0.75rem 1.5rem;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.submit-btn:hover {
+    background: #1976D2;
+}
+
+/* 销售记录表格样式 */
+.sales-table .salesperson-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sales-table .salesperson-info .name {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.sales-table .salesperson-info .remarks {
+    font-size: 0.875rem;
+    color: #666;
+    font-style: italic;
+}
+
+.sales-table .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.sales-table .icon-btn {
+    padding: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.sales-table .icon-btn.approve {
+    color: #4CAF50;
+}
+
+.sales-table .icon-btn.approve:hover {
+    background-color: #E8F5E9;
+}
+
+.sales-table .icon-btn.reject {
+    color: #F44336;
+}
+
+.sales-table .icon-btn.reject:hover {
+    background-color: #FFEBEE;
+}
+
+.status.pending {
+    background-color: #FFF3E0;
+    color: #F57C00;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    font-style: italic;
+}
+
+/* 销售人员列表表格样式 */
+.salespeople-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.salespeople-table th,
+.salespeople-table td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.salespeople-table th {
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+/* 销售人员信息样式 */
+.salespeople-table .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.salespeople-table .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.salespeople-table .person-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.salespeople-table .name {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.salespeople-table .email {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+/* 目标金额列样式 */
+.salespeople-table td:nth-child(2),
+.salespeople-table td:nth-child(3),
+.salespeople-table td:nth-child(4) {
+    text-align: right;
+    font-weight: 500;
+}
+
+/* 状态列样式 */
+.salespeople-table .status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.salespeople-table .status.active {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.salespeople-table .status.inactive {
+    background-color: #FFEBEE;
+    color: #C62828;
+}
+
+/* 操作按钮样式 */
+.salespeople-table .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.salespeople-table .icon-btn {
+    padding: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.salespeople-table .icon-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+/* 可点击行样式 */
+.salespeople-table .clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.salespeople-table .clickable-row:hover {
+    background-color: #f8f9fa;
+}
+
+/* 个人业绩表格样式 */
+.ranking-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.ranking-table th,
+.ranking-table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.ranking-table th {
+    font-weight: 500;
+    color: #666;
+    font-size: 0.875rem;
+    background: #f8f9fa;
+}
+
+/* 数字列右对齐 */
+.ranking-table th:nth-child(3),
+.ranking-table th:nth-child(4),
+.ranking-table th:nth-child(6),
+.ranking-table td:nth-child(3),
+.ranking-table td:nth-child(4),
+.ranking-table td:nth-child(6) {
+    text-align: right;
+}
+
+/* 进度条列居中 */
+.ranking-table th:nth-child(5),
+.ranking-table td:nth-child(5) {
+    text-align: center;
+}
+
+/* 排名列居中 */
+.ranking-table th:nth-child(1),
+.ranking-table td:nth-child(1) {
+    text-align: center;
+    width: 80px;
+}
+
+/* 销售人员信息列样式 */
+.ranking-table .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-right: 1rem;
+}
+
+.ranking-table .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #f0f0f0;
+}
+
+.ranking-table .person-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.ranking-table .name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.ranking-table .email {
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 进度条样式 */
+.ranking-table .progress-cell {
+    position: relative;
+    width: 120px;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.ranking-table .progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: #2196F3;
+    border-radius: 3px;
+}
+
+.ranking-table .progress-text {
+    position: absolute;
+    right: 0;
+    top: -18px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 排名样式 */
+.rank {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 0.875rem;
+    margin: 0 auto;
+}
+
+.rank-1 .rank {
+    background-color: #FFD700;
+    color: #1a1a1a;
+}
+
+.rank-2 .rank {
+    background-color: #C0C0C0;
+    color: #1a1a1a;
+}
+
+.rank-3 .rank {
+    background-color: #CD7F32;
+    color: white;
+}
+
+/* 过滤器样式 */
+.ranking-filter {
+    display: flex;
+    gap: 0.5rem;
+    background: #f8f9fa;
+    padding: 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.ranking-filter .filter-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ranking-filter .filter-btn:hover {
+    background: #fff;
+    color: #1a1a1a;
+}
+
+.ranking-filter .filter-btn.active {
+    background: #fff;
+    color: #1a1a1a;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* 目标卡片样式 */
+.target-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.target-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.target-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.target-header .material-icons {
+    font-size: 1.5rem;
+}
+
+.target-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.target-numbers {
+    margin-bottom: 1rem;
+}
+
+.target-numbers .achieved {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #2196F3;
+    margin-bottom: 0.25rem;
+}
+
+.target-numbers .target {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.progress-container {
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #2196F3;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.remaining {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+}
+
+.remaining .label {
+    color: #666;
+}
+
+.remaining .value {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+/* 月度目标卡片 */
+.target-card.monthly .achieved,
+.target-card.monthly .progress-bar {
+    color: #2196F3;
+    background-color: #2196F3;
+}
+
+/* 季度目标卡片 */
+.target-card.quarterly .achieved,
+.target-card.quarterly .progress-bar {
+    color: #4CAF50;
+    background-color: #4CAF50;
+}
+
+/* 年度目标卡片 */
+.target-card.yearly .achieved,
+.target-card.yearly .progress-bar {
+    color: #FF9800;
+    background-color: #FF9800;
+}
+
+/* 个人业绩表格样式 */
+.performance-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.performance-table th,
+.performance-table td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.performance-table th {
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #666;
+}
+
+.progress-cell {
+    position: relative;
+    width: 150px;
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-cell .progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+}
+
+.progress-cell .progress-text {
+    position: absolute;
+    right: -40px;
+    top: -4px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 排名样式 */
+.rank {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background: #f8f9fa;
+    color: #666;
+}
+
+.rank.top-1 {
+    background: #FFF3E0;
+    color: #F57C00;
+}
+
+.rank.top-2 {
+    background: #F5F5F5;
+    color: #757575;
+}
+
+.rank.top-3 {
+    background: #FBE9E7;
+    color: #D84315;
+}
+
+/* 目标设置模态框样式 */
+.target-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.target-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.target-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 1rem 0;
+}
+
+.individual-target-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.individual-target-row:last-child {
+    margin-bottom: 0;
+}
+
+.target-inputs {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.target-inputs .form-group {
+    margin: 0;
+}
+
+.target-inputs input {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.individual-targets {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* 调整滚动条样式 */
+.individual-targets::-webkit-scrollbar {
+    width: 6px;
+}
+
+.individual-targets::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.individual-targets::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.individual-targets::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
+
+/* 更新目标设置模态框样式 */
+#targetModal .modal-content {
+    max-width: 800px;  /* 增加模态框宽度 */
+    width: 95%;
+    margin: 2vh auto;
+}
+
+#targetModal .form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+#targetModal .form-group input {
+    width: 100%;  /* 修正输入框宽度 */
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+/* 公司目标部分样式 */
+.target-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.target-section h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 1.5rem 0;
+}
+
+/* 个人目标行样式 */
+.individual-target-row {
+    display: grid;
+    grid-template-columns: 300px 1fr;  /* 调整列宽分配 */
+    gap: 2rem;
+    padding: 1.25rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
+.individual-target-row:last-child {
+    margin-bottom: 0;
+}
+
+/* 销售人员信息样式 */
+.individual-target-row .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.individual-target-row .avatar {
+    width: 48px;  /* 增大头像尺寸 */
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.individual-target-row .person-details .name {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+}
+
+.individual-target-row .person-details .email {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+/* 目标输入区域样式 */
+.target-inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.target-inputs .form-group {
+    margin: 0;
+}
+
+.target-inputs label {
+    display: block;
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.target-inputs input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.target-inputs input:focus {
+    border-color: #2196F3;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+/* 调整滚动区域 */
+.individual-targets {
+    max-height: 500px;  /* 增加最大高度 */
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    margin: 0 -0.5rem;  /* 补偿内边距 */
+}
+
+/* 保存按钮样式 */
+#targetModal .form-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+#targetModal .submit-btn {
+    min-width: 120px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
+/* 更新卡片内容样式 */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.target-info {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.progress-container {
+    position: relative;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: currentColor;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    position: absolute;
+    right: 0;
+    top: -18px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 调整卡片颜色 */
+.card:nth-child(1) .progress-bar {
+    background-color: #2196F3;
+}
+
+.card:nth-child(2) .progress-bar {
+    background-color: #4CAF50;
+}
+
+.card:nth-child(3) .progress-bar {
+    background-color: #FF9800;
+}
+
+/* 状态样式 */
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status.active {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.status.inactive {
+    background-color: #FFEBEE;
+    color: #C62828;
+}
+
+/* 操作按钮样式 */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;  /* 靠右对齐 */
+}
+
+.action-buttons .icon-btn {
+    padding: 4px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.action-buttons .icon-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+.action-buttons .icon-btn.delete {
+    color: #D32F2F;
+}
+
+.action-buttons .icon-btn.delete:hover {
+    background-color: #FFEBEE;
+}
+
+/* 可点击行样式 */
+.clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.clickable-row:hover {
+    background-color: #f8f9fa;
+}
+
+/* 更新操作按钮样式 */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.action-buttons .icon-btn {
+    padding: 4px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.action-buttons .icon-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+/* 阻止按钮点击事件冒泡 */
+.action-buttons button {
+    position: relative;
+    z-index: 1;
+}
+
+.action-buttons button:hover {
+    z-index: 2;
+}
+
+/* 更新头像上传样式 */
+.avatar-upload {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1.5rem;
+    position: relative;
+    cursor: pointer;
+}
+
+.avatar-upload img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+}
+
+.avatar-upload .upload-btn {
+    position: absolute;
+    right: -4px;
+    bottom: -4px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #2196F3;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.avatar-upload .upload-btn:hover {
+    background: #1976D2;
+    transform: scale(1.05);
+}
+
+.avatar-upload .upload-btn .material-icons {
+    color: white;
+    font-size: 18px;
+}
+
+.avatar-upload input[type="file"] {
+    display: none;
+}
+
+/* 调整目标输入框布局 */
+.target-section .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.target-section input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 保存按钮样式 */
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.submit-btn {
+    min-width: 100px;
+    padding: 0.75rem 1.5rem;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.submit-btn:hover {
+    background: #1976D2;
+}
+
+/* 销售记录表格样式 */
+.sales-table .salesperson-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sales-table .salesperson-info .name {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.sales-table .salesperson-info .remarks {
+    font-size: 0.875rem;
+    color: #666;
+    font-style: italic;
+}
+
+.sales-table .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.sales-table .icon-btn {
+    padding: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.sales-table .icon-btn.approve {
+    color: #4CAF50;
+}
+
+.sales-table .icon-btn.approve:hover {
+    background-color: #E8F5E9;
+}
+
+.sales-table .icon-btn.reject {
+    color: #F44336;
+}
+
+.sales-table .icon-btn.reject:hover {
+    background-color: #FFEBEE;
+}
+
+.status.pending {
+    background-color: #FFF3E0;
+    color: #F57C00;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    font-style: italic;
+}
+
+/* 销售人员列表表格样式 */
+.salespeople-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.salespeople-table th,
+.salespeople-table td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.salespeople-table th {
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+/* 销售人员信息样式 */
+.salespeople-table .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.salespeople-table .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.salespeople-table .person-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.salespeople-table .name {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.salespeople-table .email {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+/* 目标金额列样式 */
+.salespeople-table td:nth-child(2),
+.salespeople-table td:nth-child(3),
+.salespeople-table td:nth-child(4) {
+    text-align: right;
+    font-weight: 500;
+}
+
+/* 状态列样式 */
+.salespeople-table .status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.salespeople-table .status.active {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.salespeople-table .status.inactive {
+    background-color: #FFEBEE;
+    color: #C62828;
+}
+
+/* 操作按钮样式 */
+.salespeople-table .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.salespeople-table .icon-btn {
+    padding: 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.salespeople-table .icon-btn:hover {
+    background-color: #f5f5f5;
+    color: #2196F3;
+}
+
+/* 可点击行样式 */
+.salespeople-table .clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.salespeople-table .clickable-row:hover {
+    background-color: #f8f9fa;
+}
+
+/* 个人业绩表格样式 */
+.ranking-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.ranking-table th,
+.ranking-table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.ranking-table th {
+    font-weight: 500;
+    color: #666;
+    font-size: 0.875rem;
+    background: #f8f9fa;
+}
+
+/* 数字列右对齐 */
+.ranking-table th:nth-child(3),
+.ranking-table th:nth-child(4),
+.ranking-table th:nth-child(6),
+.ranking-table td:nth-child(3),
+.ranking-table td:nth-child(4),
+.ranking-table td:nth-child(6) {
+    text-align: right;
+}
+
+/* 进度条列居中 */
+.ranking-table th:nth-child(5),
+.ranking-table td:nth-child(5) {
+    text-align: center;
+}
+
+/* 排名列居中 */
+.ranking-table th:nth-child(1),
+.ranking-table td:nth-child(1) {
+    text-align: center;
+    width: 80px;
+}
+
+/* 销售人员信息列样式 */
+.ranking-table .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-right: 1rem;
+}
+
+.ranking-table .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #f0f0f0;
+}
+
+.ranking-table .person-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.ranking-table .name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.ranking-table .email {
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 进度条样式 */
+.ranking-table .progress-cell {
+    position: relative;
+    width: 120px;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.ranking-table .progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: #2196F3;
+    border-radius: 3px;
+}
+
+.ranking-table .progress-text {
+    position: absolute;
+    right: 0;
+    top: -18px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 排名样式 */
+.rank {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 0.875rem;
+    margin: 0 auto;
+}
+
+.rank-1 .rank {
+    background-color: #FFD700;
+    color: #1a1a1a;
+}
+
+.rank-2 .rank {
+    background-color: #C0C0C0;
+    color: #1a1a1a;
+}
+
+.rank-3 .rank {
+    background-color: #CD7F32;
+    color: white;
+}
+
+/* 过滤器样式 */
+.ranking-filter {
+    display: flex;
+    gap: 0.5rem;
+    background: #f8f9fa;
+    padding: 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.ranking-filter .filter-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ranking-filter .filter-btn:hover {
+    background: #fff;
+    color: #1a1a1a;
+}
+
+.ranking-filter .filter-btn.active {
+    background: #fff;
+    color: #1a1a1a;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* 目标卡片样式 */
+.target-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.target-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.target-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.target-header .material-icons {
+    font-size: 1.5rem;
+}
+
+.target-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.target-numbers {
+    margin-bottom: 1rem;
+}
+
+.target-numbers .achieved {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #2196F3;
+    margin-bottom: 0.25rem;
+}
+
+.target-numbers .target {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.progress-container {
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #2196F3;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.remaining {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+}
+
+.remaining .label {
+    color: #666;
+}
+
+.remaining .value {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+/* 月度目标卡片 */
+.target-card.monthly .achieved,
+.target-card.monthly .progress-bar {
+    color: #2196F3;
+    background-color: #2196F3;
+}
+
+/* 季度目标卡片 */
+.target-card.quarterly .achieved,
+.target-card.quarterly .progress-bar {
+    color: #4CAF50;
+    background-color: #4CAF50;
+}
+
+/* 年度目标卡片 */
+.target-card.yearly .achieved,
+.target-card.yearly .progress-bar {
+    color: #FF9800;
+    background-color: #FF9800;
+}
+
+/* 个人业绩表格样式 */
+.performance-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.performance-table th,
+.performance-table td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.performance-table th {
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #666;
+}
+
+.progress-cell {
+    position: relative;
+    width: 150px;
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-cell .progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+}
+
+.progress-cell .progress-text {
+    position: absolute;
+    right: -40px;
+    top: -4px;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* 排名样式 */
+.rank {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background: #f8f9fa;
+    color: #666;
+}
+
+.rank.top-1 {
+    background: #FFF3E0;
+    color: #F57C00;
+}
+
+.rank.top-2 {
+    background: #F5F5F5;
+    color: #757575;
+}
+
+.rank.top-3 {
+    background: #FBE9E7;
+    color: #D84315;
+}
+
+/* 目标设置模态框样式 */
+.target-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.target-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.target-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 1rem 0;
+}
+
+.individual-target-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.individual-target-row:last-child {
+    margin-bottom: 0;
+}
+
+.target-inputs {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.target-inputs .form-group {
+    margin: 0;
+}
+
+.target-inputs input {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.individual-targets {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* 调整滚动条样式 */
+.individual-targets::-webkit-scrollbar {
+    width: 6px;
+}
+
+.individual-targets::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.individual-targets::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.individual-targets::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
+
+/* 更新目标设置模态框样式 */
+#targetModal .modal-content {
+    max-width: 800px;  /* 增加模态框宽度 */
+    width: 95%;
+    margin: 2vh auto;
+}
+
+#targetModal .form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+#targetModal .form-group input {
+    width: 100%;  /* 修正输入框宽度 */
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+/* 公司目标部分样式 */
+.target-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.target-section h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 1.5rem 0;
+}
+
+/* 个人目标行样式 */
+.individual-target-row {
+    display: grid;
+    grid-template-columns: 300px 1fr;  /* 调整列宽分配 */
+    gap: 2rem;
+    padding: 1.25rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
+.individual-target-row:last-child {
+    margin-bottom: 0;
+}
+
+/* 销售人员信息样式 */
+.individual-target-row .salesperson-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+} 

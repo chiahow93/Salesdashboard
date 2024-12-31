@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Review Admin</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- 添加 Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="salespeople.js"></script>
+</head>
+<body>
+    <div class="admin-dashboard">
+        <div class="dashboard-header">
+            <h1>Sales Review</h1>
+            
+            <!-- 添加销售统计卡片 -->
+            <div class="summary-cards">
+                <div class="card">
+                    <span class="material-icons card-icon">calendar_month</span>
+                    <span class="card-label">Monthly Sales</span>
+                    <div class="card-content">
+                        <span class="amount">RM 0</span>
+                        <div class="target-info">Target: RM 0</div>
+                        <div class="progress-container">
+                            <div class="progress-bar"></div>
+                            <span class="progress-text">0%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <span class="material-icons card-icon">calendar_view_month</span>
+                    <span class="card-label">Quarterly Sales</span>
+                    <div class="card-content">
+                        <span class="amount">RM 0</span>
+                        <div class="target-info">Target: RM 0</div>
+                        <div class="progress-container">
+                            <div class="progress-bar"></div>
+                            <span class="progress-text">0%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <span class="material-icons card-icon">calendar_today</span>
+                    <span class="card-label">Year to Date Sales</span>
+                    <div class="card-content">
+                        <span class="amount">RM 0</span>
+                        <div class="target-info">Target: RM 0</div>
+                        <div class="progress-container">
+                            <div class="progress-bar"></div>
+                            <span class="progress-text">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 添加公司销售录入按钮和管理销售人员按钮 -->
+            <div class="header-actions">
+                <a href="manage-salespeople.html" class="action-button primary">
+                    <span class="material-icons">group</span>
+                    Manage Sales People
+                </a>
+                <button class="action-button primary" onclick="openCompanySaleModal()">
+                    <span class="material-icons">add_business</span>
+                    Add Company Sale
+                </button>
+                <button class="action-button primary" onclick="openTargetModal()">
+                    <span class="material-icons">track_changes</span>
+                    Set Sales Targets
+                </button>
+            </div>
+
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <button class="filter-btn ${statusFilter === 'all' ? 'active' : ''}" data-status="all">
+                        All Records
+                    </button>
+                    <button class="filter-btn ${statusFilter === 'pending' ? 'active' : ''}" data-status="pending">
+                        <span class="dot pending"></span>Pending
+                    </button>
+                    <button class="filter-btn ${statusFilter === 'approved' ? 'active' : ''}" data-status="approved">
+                        <span class="dot approved"></span>Approved
+                    </button>
+                    <button class="filter-btn ${statusFilter === 'rejected' ? 'active' : ''}" data-status="rejected">
+                        <span class="dot rejected"></span>Rejected
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 添加审核列表 -->
+        <div class="content-section">
+            <div class="section-header">
+                <h2>Sales Records</h2>
+            </div>
+            <table class="sales-table">
+                <thead>
+                    <tr>
+                        <th>Submit Date</th>
+                        <th>Sales Person</th>
+                        <th>Amount</th>
+                        <th>Sales Date</th>
+                        <th>Remarks</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="salesTableBody">
+                    <!-- 销售记录将通过 JavaScript 动态加载 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 添加公司销售模态框 -->
+    <div id="companySaleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Company Sale</h2>
+                <button class="close-btn" onclick="closeCompanySaleModal()">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="companySaleForm" onsubmit="handleCompanySaleSubmit(event)">
+                    <div class="form-group">
+                        <label>Amount (RM)</label>
+                        <input type="number" id="companySaleAmount" required step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="companySaleDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Reference No.</label>
+                        <input type="text" id="companySaleRef" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Remarks</label>
+                        <textarea id="companySaleRemarks" rows="3"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加销售目标设置模态框 -->
+    <div id="targetModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Set Sales Targets</h2>
+                <button class="close-btn" onclick="closeTargetModal()">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- 公司整体目标设置 -->
+                <div class="target-section">
+                    <h3>Company Targets</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Monthly Target (RM)</label>
+                            <input type="number" id="companyMonthlyTarget" step="1000">
+                        </div>
+                        <div class="form-group">
+                            <label>Quarterly Target (RM)</label>
+                            <input type="number" id="companyQuarterlyTarget" step="1000">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Yearly Target (RM)</label>
+                        <input type="number" id="companyYearlyTarget" step="1000">
+                    </div>
+                </div>
+
+                <!-- 个人目标设置 -->
+                <div class="target-section">
+                    <h3>Individual Targets</h3>
+                    <div class="individual-targets" id="individualTargets">
+                        <!-- 将通过 JavaScript 动态加载销售员列表 -->
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="submit-btn" onclick="saveTargets()">Save Targets</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    let currentFilter = 'all';
+    let currentPeriod = 'month';
+
+    // 获取并显示所有销售记录
+    function loadSalesData() {
+        const salesData = JSON.parse(localStorage.getItem('salesData')) || [];
+        const tbody = document.getElementById('salesTableBody');
+        
+        // 根据状态筛选
+        const filteredData = currentFilter === 'all' 
+            ? salesData 
+            : salesData.filter(sale => sale.status === currentFilter);
+
+        // 按提交时间排序
+        const sortedData = filteredData.sort((a, b) => 
+            new Date(b.submittedAt) - new Date(a.submittedAt)
+        );
+
+        // 更新表格内容
+        tbody.innerHTML = sortedData.map(sale => `
+            <tr data-id="${sale.id}">
+                <td>
+                    ${new Date(sale.submittedAt).toLocaleDateString()}
+                    ${sale.type === 'company' ? '<span class="sale-type company">COMPANY</span>' : ''}
+                </td>
+                <td>${sale.salesName}</td>
+                <td class="amount-cell">
+                    ${sale.status === 'pending' ? `
+                        <div class="editable-amount">
+                            <span>RM ${Number(sale.salesAmount).toLocaleString()}</span>
+                            <button class="edit-btn" onclick="editAmount(${sale.id}, ${sale.salesAmount})">
+                                <span class="material-icons">edit</span>
+                            </button>
+                        </div>
+                    ` : `RM ${Number(sale.salesAmount).toLocaleString()}`}
+                </td>
+                <td>${sale.salesDate}</td>
+                <td>${sale.remarks || '-'}</td>
+                <td><span class="status ${sale.status}">${sale.status.toUpperCase()}</span></td>
+                <td class="actions">
+                    ${sale.type === 'company' ? `
+                        <button class="edit-btn" onclick="editCompanySale(${sale.id})" title="Edit">
+                            <span class="material-icons">edit</span>
+                        </button>
+                    ` : sale.status === 'pending' ? `
+                        <button class="action-btn approve" onclick="updateStatus(${sale.id}, 'approved')" title="Approve">
+                            <span class="material-icons">check_circle</span>
+                        </button>
+                        <button class="action-btn reject" onclick="updateStatus(${sale.id}, 'rejected')" title="Reject">
+                            <span class="material-icons">cancel</span>
+                        </button>
+                    ` : `
+                        <span class="material-icons status-icon ${sale.status}">
+                            ${sale.status === 'approved' ? 'check_circle' : 'cancel'}
+                        </span>
+                    `}
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // 更新销售记录状态
+    function updateStatus(saleId, newStatus) {
+        const salesData = JSON.parse(localStorage.getItem('salesData')) || [];
+        const updatedData = salesData.map(sale => {
+            if (sale.id === saleId) {
+                return { ...sale, status: newStatus };
+            }
+            return sale;
+        });
+
+        localStorage.setItem('salesData', JSON.stringify(updatedData));
+        loadSalesData();
+        calculateSalesMetrics(); // 更新销售统计
+        updateRankingTable(); // 更新排名
+    }
+
+    // 设置过滤器按钮点击事件
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // 移除所有按钮的active类
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            // 添加当前按钮的active类
+            this.classList.add('active');
+            // 更新过滤器并重新加载数据
+            currentFilter = this.dataset.status;
+            loadSalesData();
+        });
+    });
+
+    // 计算各时期销售额
+    function calculateSalesMetrics() {
+        const salesData = JSON.parse(localStorage.getItem('salesData')) || [];
+        const targets = JSON.parse(localStorage.getItem('salesTargets')) || {
+            company: {
+                monthly: 0,
+                quarterly: 0,
+                yearly: 0
+            }
+        };
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth();
+        const currentQuarter = Math.floor(currentMonth / 3);
+
+        // 创建日期范围检查函数
+        const isInCurrentMonth = (date) => {
+            return date.getFullYear() === currentYear && date.getMonth() === currentMonth;
+        };
+
+        const isInCurrentQuarter = (date) => {
+            return date.getFullYear() === currentYear && Math.floor(date.getMonth() / 3) === currentQuarter;
+        };
+
+        const isInCurrentYear = (date) => {
+            return date.getFullYear() === currentYear;
+        };
+
+        // 计算销售额
+        const metrics = salesData.reduce((acc, sale) => {
+            if (sale.status !== 'approved') return acc;
+
+            const saleDate = new Date(sale.salesDate);
+            const amount = Number(sale.salesAmount);
+
+            if (isInCurrentMonth(saleDate)) {
+                acc.monthSales += amount;
+            }
+            if (isInCurrentQuarter(saleDate)) {
+                acc.quarterSales += amount;
+            }
+            if (isInCurrentYear(saleDate)) {
+                acc.yearToDateSales += amount;
+            }
+
+            return acc;
+        }, {
+            monthSales: 0,
+            quarterSales: 0,
+            yearToDateSales: 0
+        });
+
+        // 计算完成率
+        const completion = {
+            month: (metrics.monthSales / targets.company.monthly) * 100 || 0,
+            quarter: (metrics.quarterSales / targets.company.quarterly) * 100 || 0,
+            year: (metrics.yearToDateSales / targets.company.yearly) * 100 || 0
+        };
+
+        // 更新月度卡片
+        const monthCard = document.querySelector('.summary-cards .card:nth-child(1)');
+        monthCard.querySelector('.amount').textContent = `RM ${metrics.monthSales.toLocaleString()}`;
+        monthCard.querySelector('.target-info').textContent = `Target: RM ${targets.company.monthly.toLocaleString()}`;
+        monthCard.querySelector('.progress-bar').style.width = `${Math.min(completion.month, 100)}%`;
+        monthCard.querySelector('.progress-text').textContent = `${completion.month.toFixed(1)}%`;
+
+        // 更新季度卡片
+        const quarterCard = document.querySelector('.summary-cards .card:nth-child(2)');
+        quarterCard.querySelector('.amount').textContent = `RM ${metrics.quarterSales.toLocaleString()}`;
+        quarterCard.querySelector('.target-info').textContent = `Target: RM ${targets.company.quarterly.toLocaleString()}`;
+        quarterCard.querySelector('.progress-bar').style.width = `${Math.min(completion.quarter, 100)}%`;
+        quarterCard.querySelector('.progress-text').textContent = `${completion.quarter.toFixed(1)}%`;
+
+        // 更新年度卡片
+        const yearCard = document.querySelector('.summary-cards .card:nth-child(3)');
+        yearCard.querySelector('.amount').textContent = `RM ${metrics.yearToDateSales.toLocaleString()}`;
+        yearCard.querySelector('.target-info').textContent = `Target: RM ${targets.company.yearly.toLocaleString()}`;
+        yearCard.querySelector('.progress-bar').style.width = `${Math.min(completion.year, 100)}%`;
+        yearCard.querySelector('.progress-text').textContent = `${completion.year.toFixed(1)}%`;
+
+        return metrics;
+    }
+
+    // 更新排名表格函数
+    function updateRankingTable() {
+        const salesData = JSON.parse(localStorage.getItem('salesData')) || [];
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth();
+        const currentQuarter = Math.floor(currentMonth / 3);
+
+        // 创建日期范围检查函数
+        const dateFilters = {
+            month: (date) => date.getFullYear() === currentYear && date.getMonth() === currentMonth,
+            quarter: (date) => date.getFullYear() === currentYear && Math.floor(date.getMonth() / 3) === currentQuarter,
+            year: (date) => date.getFullYear() === currentYear
+        };
+
+        // 筛选已审核的销售记录（排除公司直接销售）
+        const approvedSales = salesData.filter(sale => 
+            sale.status === 'approved' && 
+            sale.type !== 'company' &&
+            dateFilters[currentPeriod](new Date(sale.salesDate))
+        );
+
+        // 按销售人员分组并计算
+        const salesByPerson = approvedSales.reduce((acc, sale) => {
+            const name = sale.salesName;
+            if (!acc[name]) {
+                acc[name] = { totalAmount: 0, dealsCount: 0 };
+            }
+            acc[name].totalAmount += Number(sale.salesAmount);
+            acc[name].dealsCount += 1;
+            return acc;
+        }, {});
+
+        // 转换为数组并排序
+        const rankingData = Object.entries(salesByPerson)
+            .map(([name, data]) => ({
+                name,
+                totalAmount: data.totalAmount,
+                dealsCount: data.dealsCount
+            }))
+            .sort((a, b) => b.totalAmount - a.totalAmount);
+
+        // 更新排名表格
+        const tbody = document.getElementById('rankingTableBody');
+        if (rankingData.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="4" style="text-align: center; padding: 2rem;">
+                        No sales records found for this period
+                    </td>
+                </tr>
+            `;
+        } else {
+            tbody.innerHTML = rankingData.map((sale, index) => `
+                <tr class="${index < 3 ? `rank-${index + 1}` : ''}">
+                    <td>
+                        <div class="rank">${index + 1}</div>
+                    </td>
+                    <td>${sale.name}</td>
+                    <td>RM ${sale.totalAmount.toLocaleString()}</td>
+                    <td>${sale.dealsCount}</td>
+                </tr>
+            `).join('');
+        }
+    }
+
+    // 页面加载时初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        // 初始化销售人员数据（如果需要）
+        if (!localStorage.getItem('salespeople')) {
+            const defaultSalespeople = [
+                {
+                    name: "John Smith",
+                    email: "john.smith@company.com",
+                    avatar: "https://via.placeholder.com/40"
+                },
+                {
+                    name: "Mary Johnson",
+                    email: "mary.johnson@company.com",
+                    avatar: "https://via.placeholder.com/40"
+                }
+            ];
+            localStorage.setItem('salespeople', JSON.stringify(defaultSalespeople));
+        }
+
+        loadSalesData();
+        calculateSalesMetrics();  // 这将加载并显示目标
+    });
+
+    // 监听排名过滤器点击
+    document.querySelectorAll('.ranking-filter .filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // 更新按钮状态
+            document.querySelectorAll('.ranking-filter .filter-btn').forEach(b => 
+                b.classList.remove('active')
+            );
+            this.classList.add('active');
+            
+            // 更新当前周期并刷新排名
+            currentPeriod = this.dataset.period;
+            updateRankingTable();
+        });
+    });
+
+    function loadSalespeople() {
+        const salespeople = getAllSalespeople();
+        const select = document.getElementById('salesName');
+        select.innerHTML = '<option value="">Select Sales Person</option>' +
+            salespeople.map(sp => `
+                <option value="${sp.name}">${sp.name}</option>
+            `).join('');
+    }
+
+    function openSalespersonModal() {
+        document.getElementById('salespersonModal').style.display = 'block';
+    }
+
+    function closeSalespersonModal() {
+        document.getElementById('salespersonModal').style.display = 'none';
+    }
+
+    function handleAvatarChange(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('avatarPreview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function handleSalespersonSubmit(event) {
+        event.preventDefault();
+        const newSalesperson = {
+            name: document.getElementById('spName').value,
+            email: document.getElementById('spEmail').value,
+            avatar: document.getElementById('avatarPreview').src,
+            status: 'active'
+        };
+        
+        addSalesperson(newSalesperson);
+        loadSalespeople();
+        closeSalespersonModal();
+    }
+
+    // 修改排名标签点击事件
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            updateRankingTable(this.dataset.period);
+        });
+    });
+
+    // 添加编辑金额的功能
+    function editAmount(saleId, currentAmount) {
+        const newAmount = prompt('Enter new amount:', currentAmount);
+        if (newAmount !== null && !isNaN(newAmount) && newAmount.trim() !== '') {
+            const salesData = JSON.parse(localStorage.getItem('salesData')) || [];
+            const updatedData = salesData.map(sale => {
+                if (sale.id === saleId) {
+                    return { ...sale, salesAmount: Number(newAmount) };
+                }
+                return sale;
+            });
+            
+            localStorage.setItem('salesData', JSON.stringify(updatedData));
+            loadSalesData();
+            calculateSalesMetrics();
+        }
+    }
+
+    function openCompanySaleModal() {
+        const modal = document.getElementById('companySaleModal');
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        
+        // 设置默认日期为今天
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('companySaleDate').value = today;
+    }
+
+    function closeCompanySaleModal() {
+        const modal = document.getElementById('companySaleModal');
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+        document.getElementById('companySaleForm').reset();
+    }
+
+    function handleCompanySaleSubmit(event) {
+        event.preventDefault();
+        
+        const newSale = {
+            id: Date.now(),
+            salesName: 'Company Direct',
+            salesAmount: document.getElementById('companySaleAmount').value,
+            salesDate: document.getElementById('companySaleDate').value,
+            referenceNo: document.getElementById('companySaleRef').value,
+            remarks: document.getElementById('companySaleRemarks').value,
+            status: 'approved', // 公司销售直接设为已审核状态
+            submittedAt: new Date().toISOString(),
+            type: 'company' // 添加类型标识
+        };
+
+        // 保存到 localStorage
+        const salesData = JSON.parse(localStorage.getItem('salesData')) || [];
+        salesData.push(newSale);
+        localStorage.setItem('salesData', JSON.stringify(salesData));
+
+        // 更新显示
+        loadSalesData();
+        calculateSalesMetrics();
+        closeCompanySaleModal();
+    }
+
+    // 目标设置相关函数
+    function openTargetModal() {
+        const modal = document.getElementById('targetModal');
+        modal.style.display = 'block';
+        loadCurrentTargets();
+    }
+
+    function closeTargetModal() {
+        const modal = document.getElementById('targetModal');
+        modal.style.display = 'none';
+    }
+
+    function loadCurrentTargets() {
+        try {
+            // 加载当前目标设置
+            const targets = JSON.parse(localStorage.getItem('salesTargets')) || {
+                company: {
+                    monthly: 300000,
+                    quarterly: 1000000,
+                    yearly: 4000000
+                },
+                individuals: {}
+            };
+
+            // 设置公司目标
+            document.getElementById('companyMonthlyTarget').value = targets.company.monthly;
+            document.getElementById('companyQuarterlyTarget').value = targets.company.quarterly;
+            document.getElementById('companyYearlyTarget').value = targets.company.yearly;
+
+            // 加载销售员目标设置
+            const salespeople = getAllSalespeople();
+            console.log('Loading salespeople:', salespeople); // 调试信息
+
+            if (!salespeople || salespeople.length === 0) {
+                // 如果没有销售人员数据，添加一些默认数据
+                const defaultSalespeople = [
+                    {
+                        name: "John Smith",
+                        email: "john.smith@company.com",
+                        avatar: "https://via.placeholder.com/40"
+                    },
+                    {
+                        name: "Mary Johnson",
+                        email: "mary.johnson@company.com",
+                        avatar: "https://via.placeholder.com/40"
+                    }
+                ];
+                localStorage.setItem('salespeople', JSON.stringify(defaultSalespeople));
+            }
+
+            const individualTargetsHtml = salespeople.map(sp => `
+                <div class="individual-target-row">
+                    <div class="salesperson-info">
+                        <img src="${sp.avatar}" alt="${sp.name}" class="avatar">
+                        <div class="person-details">
+                            <div class="name">${sp.name}</div>
+                            <div class="email">${sp.email}</div>
+                        </div>
+                    </div>
+                    <div class="target-inputs">
+                        <div class="form-group">
+                            <label>Monthly</label>
+                            <input type="number" 
+                                   class="individual-target" 
+                                   data-person="${sp.name}" 
+                                   data-period="monthly" 
+                                   value="${targets.individuals[sp.name]?.monthly || 0}"
+                                   step="1000">
+                        </div>
+                        <div class="form-group">
+                            <label>Quarterly</label>
+                            <input type="number" 
+                                   class="individual-target" 
+                                   data-person="${sp.name}" 
+                                   data-period="quarterly" 
+                                   value="${targets.individuals[sp.name]?.quarterly || 0}"
+                                   step="1000">
+                        </div>
+                        <div class="form-group">
+                            <label>Yearly</label>
+                            <input type="number" 
+                                   class="individual-target" 
+                                   data-person="${sp.name}" 
+                                   data-period="yearly" 
+                                   value="${targets.individuals[sp.name]?.yearly || 0}"
+                                   step="1000">
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            const individualTargetsContainer = document.getElementById('individualTargets');
+            if (individualTargetsContainer) {
+                individualTargetsContainer.innerHTML = individualTargetsHtml;
+            } else {
+                console.error('Could not find individualTargets container');
+            }
+        } catch (error) {
+            console.error('Error loading targets:', error);
+            alert('Error loading targets. Please check the console for details.');
+        }
+    }
+
+    function saveTargets() {
+        try {
+            const targets = {
+                company: {
+                    monthly: Number(document.getElementById('companyMonthlyTarget').value) || 0,
+                    quarterly: Number(document.getElementById('companyQuarterlyTarget').value) || 0,
+                    yearly: Number(document.getElementById('companyYearlyTarget').value) || 0
+                },
+                individuals: {}
+            };
+
+            // 收集个人目标
+            const salespeople = getAllSalespeople();
+            salespeople.forEach(sp => {
+                const monthly = document.querySelector(`input[data-person="${sp.name}"][data-period="monthly"]`);
+                const quarterly = document.querySelector(`input[data-person="${sp.name}"][data-period="quarterly"]`);
+                const yearly = document.querySelector(`input[data-person="${sp.name}"][data-period="yearly"]`);
+
+                targets.individuals[sp.name] = {
+                    monthly: Number(monthly?.value) || 0,
+                    quarterly: Number(quarterly?.value) || 0,
+                    yearly: Number(yearly?.value) || 0
+                };
+            });
+
+            // 保存到 localStorage
+            localStorage.setItem('salesTargets', JSON.stringify(targets));
+            
+            // 更新显示
+            calculateSalesMetrics();
+            
+            // 关闭模态框并显示成功消息
+            closeTargetModal();
+            alert('Sales targets have been updated successfully!');
+        } catch (error) {
+            console.error('Error saving targets:', error);
+            alert('Error saving targets. Please check the console for details.');
+        }
+    }
+    </script>
+</body>
+</html> 

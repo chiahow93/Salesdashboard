@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Sales People</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="js/utils.js"></script>
+    <script src="js/data-manager.js"></script>
+    <script src="js/ui-manager.js"></script>
+</head>
+<body>
+    <div class="admin-dashboard">
+        <div class="dashboard-header">
+            <h1>Manage Sales People</h1>
+            
+            <div class="header-actions">
+                <button class="action-button primary" onclick="openAddSalespersonModal()">
+                    <span class="material-icons">person_add</span>
+                    Add Sales Person
+                </button>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-header">
+                <h2>Sales People List</h2>
+            </div>
+            <table class="salespeople-table">
+                <thead>
+                    <tr>
+                        <th>Sales Person</th>
+                        <th>Monthly Target</th>
+                        <th>Quarterly Target</th>
+                        <th>Yearly Target</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="salesPeopleTableBody">
+                    <!-- 将通过 JavaScript 动态加载 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 添加/编辑销售人员模态框 -->
+    <div id="salespersonModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add Sales Person</h2>
+                <button class="close-btn" onclick="closeSalespersonModal()">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="salespersonForm" onsubmit="handleSalespersonSubmit(event)">
+                    <input type="hidden" id="salespersonId">
+                    <div class="avatar-upload">
+                        <img id="avatarPreview" src="https://via.placeholder.com/100" alt="Avatar">
+                        <input type="file" id="avatarInput" accept="image/*" onchange="handleAvatarChange(event)">
+                        <button type="button" class="upload-btn">
+                            <span class="material-icons">add_a_photo</span>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" id="salespersonName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="salespersonEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="salespersonStatus">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="target-section">
+                        <h3>Sales Targets</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Monthly Target (RM)</label>
+                                <input type="number" id="monthlyTarget" step="1000" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Quarterly Target (RM)</label>
+                                <input type="number" id="quarterlyTarget" step="1000" min="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Yearly Target (RM)</label>
+                            <input type="number" id="yearlyTarget" step="1000" min="0">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    let editingId = null;
+
+    function loadSalesPeopleTable() {
+        const salespeople = DataManager.getSalespeople();
+        const targets = DataManager.getTargets();
+        const tbody = document.getElementById('salesPeopleTableBody');
+
+        tbody.innerHTML = salespeople.map(person => {
+            const personTargets = targets.individuals[person.name] || {
+                monthly: 0,
+                quarterly: 0,
+                yearly: 0
+            };
+
+            return `
+                <tr class="clickable-row" onclick="editSalesperson(${person.id})">
+                    <td>
+                        <div class="salesperson-info">
+                            <img src="${person.avatar}" alt="${person.name}" class="avatar">
+                            <div class="person-details">
+                                <div class="name">${person.name}</div>
+                                <div class="email">${person.email}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="text-align: right">RM ${personTargets.monthly.toLocaleString()}</td>
+                    <td style="text-align: right">RM ${personTargets.quarterly.toLocaleString()}</td>
+                    <td style="text-align: right">RM ${personTargets.yearly.toLocaleString()}</td>
+                    <td><span class="status ${person.status}">${person.status}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="icon-btn" onclick="event.stopPropagation(); editSalesperson(${person.id})" title="Edit Sales Person">
+                                <span class="material-icons">edit</span>
+                            </button>
+                            <button class="icon-btn" onclick="event.stopPropagation(); toggleStatus(${person.id})" title="Toggle Status">
+                                <span class="material-icons">toggle_on</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function openAddSalespersonModal() {
+        editingId = null;
+        document.getElementById('modalTitle').textContent = 'Add Sales Person';
+        document.getElementById('salespersonForm').reset();
+        document.getElementById('avatarPreview').src = 'https://via.placeholder.com/100';
+        document.getElementById('salespersonModal').style.display = 'block';
+    }
+
+    function closeSalespersonModal() {
+        document.getElementById('salespersonModal').style.display = 'none';
+    }
+
+    function editSalesperson(id) {
+        try {
+            editingId = id;
+            const salespeople = DataManager.getSalespeople();
+            const person = salespeople.find(p => p.id === id);
+            if (!person) throw new Error('Sales person not found');
+
+            const targets = DataManager.getTargets();
+            const personTargets = targets.individuals[person.name] || {
+                monthly: 0,
+                quarterly: 0,
+                yearly: 0
+            };
+
+            document.getElementById('modalTitle').textContent = 'Edit Sales Person';
+            document.getElementById('salespersonId').value = person.id;
+            document.getElementById('salespersonName').value = person.name;
+            document.getElementById('salespersonEmail').value = person.email;
+            document.getElementById('salespersonStatus').value = person.status;
+            document.getElementById('avatarPreview').src = person.avatar;
+            document.getElementById('monthlyTarget').value = personTargets.monthly;
+            document.getElementById('quarterlyTarget').value = personTargets.quarterly;
+            document.getElementById('yearlyTarget').value = personTargets.yearly;
+
+            document.getElementById('salespersonModal').style.display = 'block';
+        } catch (error) {
+            console.error('Error loading sales person:', error);
+            alert('Error loading sales person data. Please try again.');
+        }
+    }
+
+    function handleSalespersonSubmit(event) {
+        event.preventDefault();
+        
+        // 获取表单数据
+        const formData = {
+            name: document.getElementById('salespersonName').value,
+            email: document.getElementById('salespersonEmail').value,
+            status: document.getElementById('salespersonStatus').value,
+            avatar: document.getElementById('avatarPreview').src
+        };
+
+        // 获取目标数据
+        const targets = {
+            monthly: Number(document.getElementById('monthlyTarget').value) || 0,
+            quarterly: Number(document.getElementById('quarterlyTarget').value) || 0,
+            yearly: Number(document.getElementById('yearlyTarget').value) || 0
+        };
+
+        try {
+            // 更新或添加销售人员
+            if (editingId) {
+                DataManager.updateSalesperson(editingId, formData);
+            } else {
+                DataManager.addSalesperson(formData);
+            }
+
+            // 更新目标
+            const allTargets = DataManager.getTargets();
+            allTargets.individuals[formData.name] = targets;
+            DataManager.saveTargets(allTargets);
+
+            // 更新所有相关UI
+            UIManager.updateAll();
+            loadSalesPeopleTable();
+            closeSalespersonModal();
+
+            // 显示成功消息
+            alert('Sales person saved successfully!');
+        } catch (error) {
+            console.error('Error saving sales person:', error);
+            alert('Error saving sales person. Please try again.');
+        }
+    }
+
+    function deleteSalesperson(id) {
+        if (confirm('Are you sure you want to delete this sales person?')) {
+            try {
+                const salespeople = DataManager.getSalespeople();
+                const personToDelete = salespeople.find(p => p.id === id);
+                if (!personToDelete) throw new Error('Sales person not found');
+                
+                // 删除销售人员相关的目标
+                const targets = DataManager.getTargets();
+                delete targets.individuals[personToDelete.name];
+                DataManager.saveTargets(targets);
+
+                // 从列表中移除销售人员
+                const updatedSalespeople = salespeople.filter(p => p.id !== id);
+                DataManager.saveSalespeople(updatedSalespeople);
+
+                // 更新UI
+                loadSalesPeopleTable();
+                if (typeof UIManager !== 'undefined') {
+                    UIManager.updateAll();
+                }
+            } catch (error) {
+                console.error('Error deleting sales person:', error);
+                alert('Error deleting sales person. Please try again.');
+            }
+        }
+    }
+
+    function handleAvatarChange(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('avatarPreview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // 修改状态切换函数
+    function toggleStatus(id) {
+        try {
+            const salespeople = DataManager.getSalespeople();
+            const person = salespeople.find(p => p.id === id);
+            if (!person) throw new Error('Sales person not found');
+            
+            // 切换状态
+            const newStatus = person.status === 'active' ? 'inactive' : 'active';
+            
+            // 更新人员状态
+            DataManager.updateSalesperson(id, { ...person, status: newStatus });
+            
+            // 刷新表格
+            loadSalesPeopleTable();
+            // 如果有全局UI更新需要，也更新它
+            if (typeof UIManager !== 'undefined') {
+                UIManager.updateAll();
+            }
+        } catch (error) {
+            console.error('Error toggling status:', error);
+            alert('Error updating status. Please try again.');
+        }
+    }
+
+    // 初始化页面
+    document.addEventListener('DOMContentLoaded', function() {
+        try {
+            loadSalesPeopleTable();
+            
+            // 绑定头像上传点击事件
+            const avatarUpload = document.querySelector('.avatar-upload');
+            if (avatarUpload) {
+                avatarUpload.addEventListener('click', function() {
+                    document.getElementById('avatarInput').click();
+                });
+            }
+        } catch (error) {
+            console.error('Error initializing page:', error);
+            alert('Error loading page. Please refresh and try again.');
+        }
+    });
+    </script>
+</body>
+</html> 

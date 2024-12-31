@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Targets</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="js/utils.js"></script>
+    <script src="js/data-manager.js"></script>
+    <script src="js/ui-manager.js"></script>
+</head>
+<body>
+    <div class="admin-dashboard">
+        <div class="dashboard-header">
+            <h1>Sales Targets</h1>
+        </div>
+
+        <div class="summary-cards">
+            <div class="card">
+                <span class="material-icons card-icon">calendar_month</span>
+                <span class="card-label">Monthly Sales</span>
+                <div class="card-content">
+                    <span class="amount">RM 0</span>
+                    <div class="target-info">Target: RM 0</div>
+                    <div class="progress-container">
+                        <div class="progress-bar"></div>
+                        <span class="progress-text">0%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <span class="material-icons card-icon">calendar_view_month</span>
+                <span class="card-label">Quarterly Sales</span>
+                <div class="card-content">
+                    <span class="amount">RM 0</span>
+                    <div class="target-info">Target: RM 0</div>
+                    <div class="progress-container">
+                        <div class="progress-bar"></div>
+                        <span class="progress-text">0%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <span class="material-icons card-icon">calendar_today</span>
+                <span class="card-label">Year to Date Sales</span>
+                <div class="card-content">
+                    <span class="amount">RM 0</span>
+                    <div class="target-info">Target: RM 0</div>
+                    <div class="progress-container">
+                        <div class="progress-bar"></div>
+                        <span class="progress-text">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-header">
+                <h2>Individual Performance</h2>
+                <div class="ranking-filter">
+                    <button class="filter-btn active" data-period="month">This Month</button>
+                    <button class="filter-btn" data-period="quarter">This Quarter</button>
+                    <button class="filter-btn" data-period="year">This Year</button>
+                </div>
+            </div>
+            <table class="ranking-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Sales Person</th>
+                        <th>Target</th>
+                        <th>Achieved</th>
+                        <th>Progress</th>
+                        <th>To Achieve</th>
+                    </tr>
+                </thead>
+                <tbody id="rankingTableBody">
+                    <!-- 动态内容 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        try {
+            // 初始化所有UI
+            UIManager.updateAll();
+
+            // 绑定事件监听器
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const period = this.dataset.period;
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    UIManager.updateRankingTable(period);
+                });
+            });
+
+            // 定期刷新数据（可选）
+            setInterval(() => UIManager.updateAll(), 60000); // 每分钟更新一次
+        } catch (error) {
+            console.error('Error initializing page:', error);
+            alert('Error loading page. Please refresh and try again.');
+        }
+    });
+    </script>
+</body>
+</html> 
